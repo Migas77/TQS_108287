@@ -13,7 +13,7 @@ public class TqsStackTest {
 
   @BeforeEach
   void setup(){
-    stack = new TqsStack<Integer>();
+    stack = new TqsStack<>();
   }
 
   @DisplayName("A stack is empty on construction")

@@ -4,33 +4,33 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 public class TqsStack<T> {
-  private LinkedList<T> linkedList;
+  private LinkedList<T> collection;
 
   public TqsStack(){
-    linkedList = new LinkedList<T>();
+    collection = new LinkedList<T>();
   }
 
   public T pop(){
     // remove last already throws NoSuchElementException if Empty
-    return linkedList.removeLast();
+    return collection.removeLast();
   }
 
   public int size(){
-    return linkedList.size();
+    return collection.size();
   }
 
   public T peek() throws NoSuchElementException{
-    if (linkedList.isEmpty())
+    if (collection.isEmpty())
       throw new NoSuchElementException();
-    return linkedList.peek();
+    return collection.peek();
   }
 
   public void push(T item){
-    linkedList.addFirst(item);
+    collection.addFirst(item);
   }
 
   public boolean isEmpty(){
-    return linkedList.isEmpty();
+    return collection.isEmpty();
   }
   
 }
