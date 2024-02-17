@@ -4,10 +4,16 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 public class TqsStack<T> {
-  private LinkedList<T> collection;
+
+  // despite final contents of collection can still be modified
+  private final LinkedList<T> collection;
 
   public TqsStack(){
-    collection = new LinkedList<T>();
+    collection = new LinkedList<>();
+  }
+
+  public void push(T x){
+    collection.addFirst(x);
   }
 
   public T pop(){
@@ -15,22 +21,18 @@ public class TqsStack<T> {
     return collection.removeLast();
   }
 
-  public int size(){
-    return collection.size();
-  }
-
-  public T peek() throws NoSuchElementException{
+  public T peek(){
     if (collection.isEmpty())
       throw new NoSuchElementException();
     return collection.peek();
   }
 
-  public void push(T item){
-    collection.addFirst(item);
+  public int size(){
+    return collection.size();
   }
 
   public boolean isEmpty(){
     return collection.isEmpty();
   }
-  
+
 }

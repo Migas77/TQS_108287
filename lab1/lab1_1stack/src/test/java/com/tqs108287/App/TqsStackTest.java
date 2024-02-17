@@ -1,12 +1,13 @@
 package com.tqs108287.App;
 
-import java.util.EmptyStackException;
 import java.util.NoSuchElementException;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+// NÃO PODE SER ASSUMIDA A ORDEM DE EXECUÇÃO DOS TESTES
+// Use @Disabled to disable a test.
 
 public class TqsStackTest {
   TqsStack<Integer> stack;
@@ -16,96 +17,81 @@ public class TqsStackTest {
     stack = new TqsStack<>();
   }
 
-  @DisplayName("A stack is empty on construction")
+  @DisplayName("Stack is empty on construction.")
   @Test
-  void NewStackIsEmptyTest(){
+  void stackEmptyOnConstruction(){
     // arrange (required objects, initial state)
       // BeforeEach already creates an empty stack; noting to do here
     // act
     // assess
+      // use Assertions.assertAll to check every assertion even if one of them fails
+      // without this only the first assertion would fail
     Assertions.assertTrue(stack.isEmpty());
+  }
+
+  @Test
+  @DisplayName("Stack has size 0 on construction")
+  void stackSizeOnConstruction() {
     Assertions.assertEquals(stack.size(), 0);
   }
 
-  @DisplayName("A stack has size 0 on construction.")
+  @DisplayName("After n pushes to an empty stack, n > 0, the stack is not empty and its size is n.")
   @Test
-  void nPushToEmptyStackTest(){
-    // arrange
+  void pushNValues_thenSizeIsN(){
     int n = 10;
-    // act
     for (int i=1; i <= n; i++){
       stack.push(0);
     }
-    // assess
-    Assertions.assertFalse(stack.isEmpty());
-    Assertions.assertEquals(stack.size(),n);
+    Assertions.assertAll(
+            () -> Assertions.assertFalse(stack.isEmpty()),
+            () -> Assertions.assertEquals(stack.size(), n)
+    );
   }
 
-  @DisplayName("")
+  @DisplayName("If one pushes x then pops, the value popped is x.")
   @Test
-  void popTest(){
-    // arrange
+  void pushX_thenPopX(){
     int x = 1;
-    // act
     stack.push(x);
-    // assess
     Assertions.assertEquals(stack.pop(), x);
   }
 
-  @DisplayName("")
+  @DisplayName("If one pushes x then peeks, the value returned is x, but the size stays the same.")
   @Test 
-  void peekTest(){
-    // arrange
+  void pushX_thenPeekX(){
     int x = 1;
-    // act
     stack.push(x);
     int size = stack.size();
-    // assess
-    Assertions.assertEquals(stack.peek(), x);
-    Assertions.assertEquals(size, stack.size());
+    Assertions.assertAll(
+            () -> Assertions.assertEquals(stack.peek(), x),
+            () -> Assertions.assertEquals(size, stack.size())
+    );
   }
 
-  @DisplayName("")
+  @DisplayName("If the size is n, then after n pops, the stack is empty and has a size 0.")
   @Test
-  void sizeAfterNPopsTest(){
-    // arrange
+  void popNValues_thenSizeIs0(){
     int n = 10;
     for (int i=1; i <= n; i++){
       stack.push(0);
     }
-    // act
     for (int i=1; i <= n; i++){
       stack.pop();
     }
-    // assess
     Assertions.assertTrue(stack.isEmpty());
   }
 
-  @DisplayName("")
+  @DisplayName("Popping from an empty stack does throw a NoSuchElementException")
   @Test
   void popFromAnEmptyStack(){
-    // arrange (required objects, initial state)
-    // act
-    // assert
     Assertions.assertThrows(NoSuchElementException.class, () -> stack.pop());
   }
 
-  @DisplayName("")
+  @DisplayName("Peeking into an empty stack does throw a NoSuchElementException.")
   @Test
   void peekAnEmptyStack(){
-    // arrange (required objects, initial state)
-    // act
-    // assert
     Assertions.assertThrows(NoSuchElementException.class, () -> stack.peek());
   }
 
-
-  
 }
 
-// @Disabled
-// @DisplayName
-
-
-// size()
-// pushNValues_thenSizeIsN
