@@ -5,7 +5,7 @@ Miguel Belchior Figueiredo - 108287
 
 ### Lab 1
 #### 2.c)
-[Jacoco analysis](https://www.baeldung.com/jacoco)
+- [Jacoco analysis](https://www.baeldung.com/jacoco)
 - **Assess the coverage level in project “Euromillions-play”.** -  As classes que oferecem menos coverage são as seguintes (por ordem crescente de coverage):
   1. DemoMain - não foram feitos testes para esta classe;
   2. CuponEuromillions  - nesta classe os métodos **countDips()** e **format** não são covered pelos testes existentes, resultando em uma cobertura de 0% nestes métodos o que baixa a coverage da classe. 
@@ -14,10 +14,7 @@ Miguel Belchior Figueiredo - 108287
      ![BoundedSetOfNaturalsAddCoverage](./images/BoundedSetOfNaturalsAddCoverage_before.png) ![BoundedSetOfNaturalsSizeCoverage](./images/BoundedSetOfNaturalsSizeCoverage_before.png)
      ![BoundedSetOfNaturalsFromArrayCoverage](./images/BoundedSetOfNaturalsFromArrayCoverage_before.png) ![BoundedSetOfNaturalsIntersectsCoverage](./images/BoundedSetOfNaturalsIntersectsCoverage_before.png) 
 
-  
-
-
-
-#### 2.d) ESCREVER CONCLUSÃO 2.d)
-Bounded set of naturals - 54% -> 86%
-add(int) - 56% - 100%
+#### 2.d) 
+![BoundedSetOfNaturalsCoverage](./images/BoundedSetOfNaturalsCoverage_after.png)
+- Todos os métodos previamente mencionados têm agora uma coverage de 100%.
+- É de focar que a coverage de uma classe não tem de ser sempre 100% não fazendo sentido fazer testes para métodos equals e hashcode que normalmente até são gerados **(observação do professor na aula prática)**  

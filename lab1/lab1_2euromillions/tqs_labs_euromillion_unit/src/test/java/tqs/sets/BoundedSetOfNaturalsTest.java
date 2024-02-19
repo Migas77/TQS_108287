@@ -35,25 +35,45 @@ class BoundedSetOfNaturalsTest {
 
     @Test
     public void testAddElement() {
-
         setA.add(99);
         assertTrue(setA.contains(99), "add: added element not found in set.");
         assertEquals(1, setA.size());
+    }
 
-        // must fail with exception (reached max size)
-        assertThrows(IllegalArgumentException.class, () -> setB.add(1));
-
-        // must fail with exception (trying to insert existent value)
+    @Test
+    @DisplayName("Adding an element into a set that already contains it does throw an IllegalArgumentException.")
+    void testAddExistingElement() {
         setC.add(1);
         assertThrows(IllegalArgumentException.class, () -> setC.add(1));
     }
 
     @Test
+    @DisplayName("Adding a element into a maxed out set does throw an IllegalArgumentException.")
+    void testAddElementFullSet() {
+        assertThrows(IllegalArgumentException.class, () -> setB.add(1));
+    }
+
+    @Test
+    @DisplayName("Adding into a set an array with unnatural values does throw an IllegalArgumentException.")
     public void testAddFromBadArray() {
         int[] elems = new int[]{10, -20, -30};
 
         // must fail with exception (-20 and -30 are not valid for neither numbers nor stars)
         assertThrows(IllegalArgumentException.class, () -> setC.add(elems));
+    }
+
+    @Test
+    @DisplayName("The intersection() method between disjoint sets returns false.")
+    void testIntersectDisjointSets() {
+        setA = BoundedSetOfNaturals.fromArray(new int[]{1});
+        assertFalse(setA.intersects(setB));
+    }
+
+    @Test
+    @DisplayName("The intersection() method between overlapping sets returns true.")
+    void testName() {
+        setA = BoundedSetOfNaturals.fromArray(new int[]{10});
+        assertTrue(setA.intersects(setB));
     }
 
 
