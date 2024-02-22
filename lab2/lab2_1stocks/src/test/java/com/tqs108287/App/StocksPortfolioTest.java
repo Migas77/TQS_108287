@@ -41,8 +41,8 @@ public class StocksPortfolioTest {
         double result = portfolio.totalValue();
 
         // 5. Verify the result (assert) and the use of the mock (verify)
-        assertEquals(result, 31.0);
-        assertThat(result, equalTo(result));
+        assertEquals(result, 31.0);     // JUnit
+        assertThat(result, equalTo(result));   // Hamcrest
         verify(market, times(2)).lookUpPrice(anyString());
         // verificar que o lookup price foi chamado exatamente duas vezes (neste caso quando executa totalValue)
     }
@@ -67,8 +67,8 @@ public class StocksPortfolioTest {
         double result = portfolio.totalValue();
 
         // 5. Verify the result (assert) and the use of the mock (verify)
-        assertEquals(result, 31.0);
-        assertThat(result, equalTo(result));
+        assertEquals(result, 31.0);     // JUnit
+        assertThat(result, equalTo(result));   // Hamcrest
         verify(market, times(2)).lookUpPrice(anyString());
     }
 
