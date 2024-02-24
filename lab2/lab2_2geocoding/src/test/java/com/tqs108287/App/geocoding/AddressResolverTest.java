@@ -56,14 +56,14 @@ class AddressResolverTest {
     @Test
     public void whenBadCoordidates_thenReturnNoValidAddress() throws IOException, URISyntaxException, ParseException {
 
-        /// todo: implement test
+        /// done: implement test
         double latitude = -361;
         double longitude = -361;
         String uri = String.format("https://www.mapquestapi.com/geocoding/v1/reverse?key=%s&location=%.5f%%2C%.5f&outFormat=json&thumbMaps=false",ConfigUtils.getPropertyFromConfig("mapquest_key"), latitude, longitude);
 
         when(httpClient.doHttpGet(uri)).thenReturn("{\"info\":{\"statuscode\":400,\"copyright\":{\"text\":\"© 2024 MapQuest, Inc.\",\"imageUrl\":\"http://api.mqcdn.com/res/mqlogo.gif\",\"imageAltText\":\"© 2024 MapQuest, Inc.\"},\"messages\":[\"Illegal argument from request: Invalid LatLng specified.\"]},\"options\":{\"maxResults\":1,\"ignoreLatLngInput\":false},\"results\":[{\"providedLocation\":{},\"locations\":[]}]}");
 
-        Optional<Address> result = resolver.findAddressForLocation( -361,-361);
+        Optional<Address> result = resolver.findAddressForLocation( latitude,longitude);
         // verify no valid result
         assertFalse( result.isPresent());
 
