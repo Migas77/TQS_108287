@@ -1,4 +1,5 @@
-### Lab 1
+## Lab 1
+### Exercises
 #### 2.c)
 - [Jacoco analysis](https://www.baeldung.com/jacoco)
 - **Assess the coverage level in project “Euromillions-play”.** -  As classes que oferecem menos coverage são as seguintes (por ordem crescente de coverage):
