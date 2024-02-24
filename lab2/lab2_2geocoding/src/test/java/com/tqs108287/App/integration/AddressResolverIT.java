@@ -37,7 +37,6 @@ public class AddressResolverIT {
         double latitude = 40.63436;
         double longitude = -8.65616;
 
-        // will crash for now...need to set the resolver before using it
         Optional<Address> result = resolver.findAddressForLocation(latitude, longitude);
 
         //return
