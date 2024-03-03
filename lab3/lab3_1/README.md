@@ -111,7 +111,7 @@ spring.datasource.password=demo                             ## define password
 ```
 
 **e) the sample project demonstrates three test strategies to assess an API (C, D and E) developed with SpringBoot. Which are the main/key differences?**
-- **C** - by using ``@WebMvcTest`` mode we run the tests in a simplified and light environment, simulating the behavior of an application server. ``MockMvc`` provides an entry point to server-side testing. It performs full Spring MVC request handling but via mock request and response objects without starting a full HTTP server. In principle, no database is involved.
+- **C** - by using ``@WebMvcTest`` mode we run the tests in a simplified and light environment, simulating the behavior of an application server. ``MockMvc`` provides an entry point to server-side testing. It performs full Spring MVC request handling but via mock request and response objects without starting a full HTTP server. Neither repository component nor database is involved.
 ```java
 @WebMvcTest(EmployeeRestController.class)
 class C_EmployeeController_WithMockServiceTest {
