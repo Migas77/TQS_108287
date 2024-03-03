@@ -60,17 +60,19 @@ public class CarRestControllerIT {
 
     @Test
     void givenOneCarId_whenGetCar_thenStatus200() throws Exception{
-        createTestCar(1L,"porshe", "911 turbo s");
+        Car car0 = createTestCar("porshe", "911 turbo s");
 
-        ResponseEntity<Car> entity = restTemplate.getForEntity("/api/car/1", Car.class);
+        ResponseEntity<Car> response = restTemplate.getForEntity(String.format("/api/car/%d", car0.getCarId()), Car.class);
 
-        List<Car> allCars = carRepository.findAll();
-        assertThat(allCars).extracting(Car::getMaker).containsOnly("porshe");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getMaker()).isEqualTo("porshe");
+
     }
 
-    private void createTestCar(String maker, String model) {
+    private Car createTestCar(String maker, String model) {
         Car emp = new Car(maker, maker);
-        carRepository.saveAndFlush(emp);
+        return carRepository.saveAndFlush(emp);
     }
 
     private void createTestCar(Long carId, String maker, String model) {

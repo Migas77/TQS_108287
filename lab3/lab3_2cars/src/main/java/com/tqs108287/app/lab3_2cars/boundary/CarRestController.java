@@ -32,8 +32,10 @@ public class CarRestController {
     }
 
     @GetMapping("/car/{id}")
-    public Car getCarById(@PathVariable long id) {
-        return carManagerService.getCarDetails(id).orElse(null);
+    public ResponseEntity<Car> getCarById(@PathVariable long id) {
+        HttpStatus status = HttpStatus.OK;
+        Car found = carManagerService.getCarDetails(id).orElse(null);
+        return new ResponseEntity<>(found, status);
     }
 
 }
