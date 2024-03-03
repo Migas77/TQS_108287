@@ -28,15 +28,18 @@ public class CarService_UnitTest {
 
     @BeforeEach
     void setUp(){
-        Car porshe = new Car(1L,"porshe", "911 turbo s");
+        Car porshe0 = new Car(1L,"porshe", "911 turbo s");
+        Car porshe1 = new Car("porshe", "gt3rs");
         Car opel = new Car("opel", "corsa");
         Car volkswagen = new Car("volkswagen", "golf");
-        List<Car> allCars = Arrays.asList(porshe, opel, volkswagen);
+        List<Car> porshes = Arrays.asList(porshe0, porshe1);
+        List<Car> allCars = Arrays.asList(porshe0, porshe1, opel, volkswagen);
 
-        when(carRepository.findByCarId(porshe.getCarId())).thenReturn(porshe);
+        when(carRepository.findByCarId(porshe0.getCarId())).thenReturn(porshe0);
         when(carRepository.findByCarId(opel.getCarId())).thenReturn(opel);
         when(carRepository.findByCarId(-111L)).thenReturn(null);
         when(carRepository.findAll()).thenReturn(allCars);
+        when(carRepository.findByMaker("porshe")).thenReturn(porshes);
     }
 
     @Test
@@ -61,11 +64,19 @@ public class CarService_UnitTest {
     }
 
     @Test
-    void given3Cars_whengetAll_thenReturn3Records() {
+    void given4Cars_whengetAll_thenReturn4Records() {
         List<Car> allCars = carManagerService.getAllCars();
 
-        assertThat(allCars).hasSize(3).extracting(Car::getMaker).containsExactly("porshe", "opel", "volkswagen");
+        assertThat(allCars).hasSize(4).extracting(Car::getMaker).containsExactly("porshe", "porshe", "opel", "volkswagen");
         verify(carRepository, times(1)).findAll();
+    }
+
+    @Test
+    void given4Cars_whengetByMaker_thenReturnMakerRecords() {
+        List<Car> allCars = carManagerService.getCarsByMaker("porshe");
+
+        assertThat(allCars).hasSize(2).extracting(Car::getMaker).containsExactly("porshe", "porshe");
+        verify(carRepository, times(1)).findByMaker("porshe");
     }
 
 

@@ -27,7 +27,9 @@ public class CarRestController {
     }
 
     @GetMapping("/cars")
-    public List<Car> getAllCars() {
+    public List<Car> getAllCars(@RequestParam(required = false) String maker) {
+        if (maker != null)
+            return carManagerService.getCarsByMaker(maker);
         return carManagerService.getAllCars();
     }
 

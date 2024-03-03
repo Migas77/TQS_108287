@@ -47,4 +47,21 @@ public class CarRepositoryTest {
 
         assertThat(allCars).hasSize(3).extracting(Car::getMaker).containsOnly(porshe.getMaker(), opel.getMaker(), volkswagen.getMaker());
     }
+
+    @Test
+    void givenSetOfCars_whenFindByMaker_thenReturnMakerCars() {
+        Car porshe0 = new Car("porshe", "911 turbo s");
+        Car porshe1 = new Car("porshe", "gt3rs");
+        Car opel = new Car("opel", "corsa");
+        Car volkswagen = new Car("volkswagen", "golf");
+
+        entityManager.persist(porshe0);
+        entityManager.persist(porshe1);
+        entityManager.persist(opel);
+        entityManager.persist(volkswagen);
+        entityManager.flush();
+        List<Car> porshes = carRepository.findByMaker("porshe");
+
+        assertThat(porshes).hasSize(2).extracting(Car::getMaker).containsOnly("porshe", "porshe");
+    }
 }

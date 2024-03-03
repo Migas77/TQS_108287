@@ -69,6 +69,25 @@ public class CarRestController_WithMockServiceTest {
 
     }
 
+    @Test
+    void givenManyCars_whenGetCarsByMaker_thenReturnJsonArray() throws Exception{
+        Car porshe0 = new Car("porshe", "911 turbo s");
+        Car porshe1 = new Car("porshe", "gt3rs");
+        Car volkswagen = new Car("volkswagen", "golf");
+        List<Car> porshes = Arrays.asList(porshe0, porshe1);
+        when(service.getCarsByMaker("porshe")).thenReturn(porshes);
+
+        mvc.perform(
+                get("/api/cars?maker=porshe").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].model", is(porshe0.getModel())))
+                .andExpect(jsonPath("$[1].model", is(porshe1.getModel())));
+
+        verify(service, times(1)).getCarsByMaker("porshe");
+
+    }
+
 
     @Test
     void whenGetCar_thenReturnCar() throws Exception{

@@ -9,5 +9,7 @@ import java.util.List;
 public interface CarRepository extends JpaRepository<Car, Long> {
     public Car findByCarId(Long id);
 
+    public List<Car> findByMaker(String maker);
+
     public List<Car> findAll();
 }

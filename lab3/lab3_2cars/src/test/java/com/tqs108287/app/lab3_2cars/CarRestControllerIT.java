@@ -61,6 +61,20 @@ public class CarRestControllerIT {
         assertThat(response.getBody()).extracting(Car::getMaker).containsExactly("porshe","opel","volkswagen");
     }
 
+    @Test
+    void givenManyCars_whenGetCarsByMaker_thenStatus200() throws Exception{
+        createTestCar("porshe", "911 turbo s");
+        createTestCar("porshe", "gt3rs");
+        createTestCar("opel", "corsa");
+        createTestCar("volkswagen", "golf");
+
+        ResponseEntity<List<Car>> response = restTemplate
+                .exchange("/api/cars?maker=porshe", HttpMethod.GET, null, new ParameterizedTypeReference<List<Car>>() {});
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).extracting(Car::getMaker).containsExactly("porshe","porshe");
+    }
+
 
     @Test
     void givenOneCarId_whenGetCar_thenStatus200() throws Exception{
