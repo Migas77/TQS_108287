@@ -23,6 +23,10 @@ public class CarManagerService {
         return carRepository.findAll();
     }
 
+    public List<Car> getCarsByMaker(String maker){
+        return carRepository.findByMaker(maker);
+    };
+
     public Optional<Car> getCarDetails(Long carId){
         // if null -> empty optional
         return Optional.ofNullable(carRepository.findByCarId(carId));
