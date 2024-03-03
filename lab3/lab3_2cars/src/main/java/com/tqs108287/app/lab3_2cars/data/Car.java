@@ -1,4 +1,4 @@
-package com.tqs108287.app.lab3_2cars.Data;
+package com.tqs108287.app.lab3_2cars.data;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -9,23 +9,26 @@ import java.util.Objects;
 @Entity
 @Table(name = "tqs_car")
 public class Car {
-    static final int MAX_NAME_SIZE = 60;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long carId;
 
-    @Size(min = 3, max = MAX_NAME_SIZE)
     @NotNull
     private String maker;
 
-    @Size(min = 3, max = MAX_NAME_SIZE)
     @NotNull
     private String model;
 
     public Car() { }
 
     public Car(String maker, String model) {
+        this.maker = maker;
+        this.model = model;
+    }
+
+    public Car(Long carId, String maker, String model) {
+        this.carId = carId;
         this.maker = maker;
         this.model = model;
     }
