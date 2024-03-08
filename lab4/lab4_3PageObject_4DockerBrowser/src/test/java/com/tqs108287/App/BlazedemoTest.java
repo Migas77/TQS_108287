@@ -4,6 +4,8 @@ import com.tqs108287.App.pages.ConfirmationPage;
 import com.tqs108287.App.pages.HomePage;
 import com.tqs108287.App.pages.PurchasePage;
 import com.tqs108287.App.pages.ReservePage;
+import io.github.bonigarcia.seljup.BrowserType;
+import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,6 +55,18 @@ public class BlazedemoTest {
   @Test
   @DisplayName("Blazedemo reservation test with Page Object Pattern")
   public void blazedemoTestWithPageObjectPattern(ChromeDriver driver) {
+    HomePage homePage = new HomePage(driver);
+    ReservePage reservePage = homePage.searchWith("Portland", "Berlin");
+    assertThat(reservePage.getDescriptionText(), is("Flights from Portland to Berlin:"));
+    PurchasePage purchasePage = reservePage.reserveFlight(3);
+    ConfirmationPage confirmationPage = purchasePage.purchaseFlight("First Last", "123 Main St.", "Anytown", "State", "12345", "American Express", "12345678", "12", "2018", "John Smith");
+    assertThat(confirmationPage.getDescriptionText(), is("Thank you for your purchase today!"));
+    assertThat(confirmationPage.getTitleText(), is("BlazeDemo Confirmation"));
+  }
+
+  @Test
+  @DisplayName("Blazedemo reservation test with Page Object Pattern and with Docker Browsers")
+  public void blazedemoTestWithPageObjectPatternAndDockerBrowser(@DockerBrowser(type = BrowserType.EDGE) WebDriver driver) {
     HomePage homePage = new HomePage(driver);
     ReservePage reservePage = homePage.searchWith("Portland", "Berlin");
     assertThat(reservePage.getDescriptionText(), is("Flights from Portland to Berlin:"));
