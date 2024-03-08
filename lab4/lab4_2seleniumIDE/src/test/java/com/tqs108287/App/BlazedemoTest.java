@@ -35,51 +35,31 @@ public class BlazedemoTest {
   @Test
   public void blazedemo() {
     driver.get("https://blazedemo.com/");
-    driver.manage().window().setSize(new Dimension(584, 942));
     {
       WebElement dropdown = driver.findElement(By.name("fromPort"));
       dropdown.findElement(By.xpath("//option[. = 'Portland']")).click();
     }
     {
-      WebElement element = driver.findElement(By.name("fromPort"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).clickAndHold().perform();
-    }
-    {
-      WebElement element = driver.findElement(By.name("fromPort"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).perform();
-    }
-    {
-      WebElement element = driver.findElement(By.name("fromPort"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).release().perform();
-    }
-    {
       WebElement dropdown = driver.findElement(By.name("toPort"));
       dropdown.findElement(By.xpath("//option[. = 'Berlin']")).click();
     }
-    {
-      WebElement element = driver.findElement(By.name("toPort"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).clickAndHold().perform();
-    }
-    {
-      WebElement element = driver.findElement(By.name("toPort"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).perform();
-    }
-    {
-      WebElement element = driver.findElement(By.name("toPort"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).release().perform();
-    }
     driver.findElement(By.cssSelector(".btn-primary")).click();
-    driver.findElement(By.cssSelector("html")).click();
     assertThat(driver.findElement(By.cssSelector("h3")).getText(), is("Flights from Portland to Berlin:"));
     driver.findElement(By.cssSelector("tr:nth-child(3) .btn")).click();
+    driver.findElement(By.id("inputName")).sendKeys("First Last");
+    driver.findElement(By.id("address")).sendKeys("123 Main St.");
+    driver.findElement(By.id("city")).sendKeys("Anytown");
+    driver.findElement(By.id("state")).sendKeys("State");
+    driver.findElement(By.id("zipCode")).sendKeys("12345");
+    {
+      WebElement dropdown = driver.findElement(By.id("cardType"));
+      dropdown.findElement(By.xpath("//option[. = 'American Express']")).click();
+    }
+    driver.findElement(By.id("creditCardNumber")).sendKeys("12345678");
+    driver.findElement(By.id("creditCardMonth")).sendKeys("12");
+    driver.findElement(By.id("creditCardYear")).sendKeys("2018");
+    driver.findElement(By.id("nameOnCard")).sendKeys("John Smith");
     driver.findElement(By.cssSelector(".btn-primary")).click();
-    driver.findElement(By.cssSelector("h1")).click();
     assertThat(driver.findElement(By.cssSelector("h1")).getText(), is("Thank you for your purchase today!"));
     assertThat(driver.getTitle(), is("BlazeDemo Confirmation"));
   }

@@ -1,113 +1,41 @@
 {
-  "id": "eeee1aa5-2eb0-46e1-9d8f-efc0cffe23c4",
+  "id": "3fd587eb-8844-4049-894d-1473bc30b0ba",
   "version": "2.0",
-  "name": "TQS_Lab4",
+  "name": "lab_4_2_a",
   "url": "https://blazedemo.com",
   "tests": [{
-    "id": "8f3de333-6b77-431c-ad03-6ab09eccdb3c",
+    "id": "72c51d35-e20c-48ac-84ce-886b0892c7b2",
     "name": "blazedemo",
     "commands": [{
-      "id": "f981a042-ff24-4b61-a257-30a668cf7025",
+      "id": "2d619e5a-1226-4160-98a8-ba92b15e5419",
       "comment": "",
       "command": "open",
       "target": "/",
       "targets": [],
       "value": ""
     }, {
-      "id": "bd86557e-dda5-49e9-9332-a1fa19278874",
+      "id": "285c7c1a-a841-4d1c-a139-72e237d29f14",
       "comment": "",
       "command": "setWindowSize",
       "target": "584x942",
       "targets": [],
       "value": ""
     }, {
-      "id": "7b0f2430-08e0-4945-9639-706341bde44c",
+      "id": "d3302fab-a2b6-4bb6-bbaa-fb5164d636ea",
       "comment": "",
       "command": "select",
       "target": "name=fromPort",
       "targets": [],
       "value": "label=Portland"
     }, {
-      "id": "792272fe-bd7e-4168-adc6-7fac965f9284",
-      "comment": "",
-      "command": "mouseDownAt",
-      "target": "name=fromPort",
-      "targets": [
-        ["name=fromPort", "name"],
-        ["css=.form-inline:nth-child(1)", "css:finder"],
-        ["xpath=//select[@name='fromPort']", "xpath:attributes"],
-        ["xpath=//select", "xpath:position"]
-      ],
-      "value": "0,0"
-    }, {
-      "id": "43a8c194-6822-47b6-b2aa-2cd093ff3cff",
-      "comment": "",
-      "command": "mouseMoveAt",
-      "target": "name=fromPort",
-      "targets": [
-        ["name=fromPort", "name"],
-        ["css=.form-inline:nth-child(1)", "css:finder"],
-        ["xpath=//select[@name='fromPort']", "xpath:attributes"],
-        ["xpath=//select", "xpath:position"]
-      ],
-      "value": "0,0"
-    }, {
-      "id": "b72966c1-cc3e-4e4a-9c46-4e300a2a7810",
-      "comment": "",
-      "command": "mouseUpAt",
-      "target": "name=fromPort",
-      "targets": [
-        ["name=fromPort", "name"],
-        ["css=.form-inline:nth-child(1)", "css:finder"],
-        ["xpath=//select[@name='fromPort']", "xpath:attributes"],
-        ["xpath=//select", "xpath:position"]
-      ],
-      "value": "0,0"
-    }, {
-      "id": "548ddf22-0bd8-4076-a734-6a27baa89bf5",
+      "id": "b42dfae5-db64-4010-8616-77f530fe30cf",
       "comment": "",
       "command": "select",
       "target": "name=toPort",
       "targets": [],
       "value": "label=Berlin"
     }, {
-      "id": "4b8457d9-9777-4ed9-851c-264ac629b1a5",
-      "comment": "",
-      "command": "mouseDownAt",
-      "target": "name=toPort",
-      "targets": [
-        ["name=toPort", "name"],
-        ["css=.form-inline:nth-child(4)", "css:finder"],
-        ["xpath=//select[@name='toPort']", "xpath:attributes"],
-        ["xpath=//select[2]", "xpath:position"]
-      ],
-      "value": "0,0"
-    }, {
-      "id": "6fd11891-cc70-443a-be4d-4fe7d0bfbba9",
-      "comment": "",
-      "command": "mouseMoveAt",
-      "target": "name=toPort",
-      "targets": [
-        ["name=toPort", "name"],
-        ["css=.form-inline:nth-child(4)", "css:finder"],
-        ["xpath=//select[@name='toPort']", "xpath:attributes"],
-        ["xpath=//select[2]", "xpath:position"]
-      ],
-      "value": "0,0"
-    }, {
-      "id": "b4ad0b15-9f07-4e54-b743-1c15884f376c",
-      "comment": "",
-      "command": "mouseUpAt",
-      "target": "name=toPort",
-      "targets": [
-        ["name=toPort", "name"],
-        ["css=.form-inline:nth-child(4)", "css:finder"],
-        ["xpath=//select[@name='toPort']", "xpath:attributes"],
-        ["xpath=//select[2]", "xpath:position"]
-      ],
-      "value": "0,0"
-    }, {
-      "id": "dffc580f-7fe9-4b71-ab90-086fd55ffab4",
+      "id": "b439a0a5-dab0-4a32-9ccb-bf5b0d6032e5",
       "comment": "",
       "command": "click",
       "target": "css=.btn-primary",
@@ -118,17 +46,7 @@
       ],
       "value": ""
     }, {
-      "id": "862a1606-2996-492e-af09-8aa75c950434",
-      "comment": "",
-      "command": "click",
-      "target": "css=html",
-      "targets": [
-        ["css=html", "css:finder"],
-        ["xpath=//html", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "27441093-8352-4811-9bf9-2966ddb31be2",
+      "id": "07702e67-9a4f-438a-b3db-d268092ebfda",
       "comment": "",
       "command": "assertText",
       "target": "css=h3",
@@ -139,7 +57,7 @@
       ],
       "value": "Flights from Portland to Berlin:"
     }, {
-      "id": "ca9c8231-9757-4575-9ff1-21e4bcb4afff",
+      "id": "bdfa8af8-3ec8-4620-859d-0bd1b8aa01a7",
       "comment": "",
       "command": "click",
       "target": "css=tr:nth-child(3) .btn",
@@ -150,7 +68,131 @@
       ],
       "value": ""
     }, {
-      "id": "53514c3b-da34-4934-b331-caa440e18763",
+      "id": "bcb6217e-28ff-4060-909e-640f56feed8f",
+      "comment": "",
+      "command": "type",
+      "target": "id=inputName",
+      "targets": [
+        ["id=inputName", "id"],
+        ["name=inputName", "name"],
+        ["css=#inputName", "css:finder"],
+        ["xpath=//input[@id='inputName']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "First Last"
+    }, {
+      "id": "25761607-adf8-4c5d-bff5-e2f5a74b0cd5",
+      "comment": "",
+      "command": "type",
+      "target": "id=address",
+      "targets": [
+        ["id=address", "id"],
+        ["name=address", "name"],
+        ["css=#address", "css:finder"],
+        ["xpath=//input[@id='address']", "xpath:attributes"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "123 Main St."
+    }, {
+      "id": "6cb110f0-3419-4b79-a7dd-3140a6719971",
+      "comment": "",
+      "command": "type",
+      "target": "id=city",
+      "targets": [
+        ["id=city", "id"],
+        ["name=city", "name"],
+        ["css=#city", "css:finder"],
+        ["xpath=//input[@id='city']", "xpath:attributes"],
+        ["xpath=//div[3]/div/input", "xpath:position"]
+      ],
+      "value": "Anytown"
+    }, {
+      "id": "e65f914a-0bf6-44c0-ae6c-62baf20dd44b",
+      "comment": "",
+      "command": "type",
+      "target": "id=state",
+      "targets": [
+        ["id=state", "id"],
+        ["name=state", "name"],
+        ["css=#state", "css:finder"],
+        ["xpath=//input[@id='state']", "xpath:attributes"],
+        ["xpath=//div[4]/div/input", "xpath:position"]
+      ],
+      "value": "State"
+    }, {
+      "id": "3a7320a0-15a6-4deb-a7d1-99a00ee387ea",
+      "comment": "",
+      "command": "type",
+      "target": "id=zipCode",
+      "targets": [
+        ["id=zipCode", "id"],
+        ["name=zipCode", "name"],
+        ["css=#zipCode", "css:finder"],
+        ["xpath=//input[@id='zipCode']", "xpath:attributes"],
+        ["xpath=//div[5]/div/input", "xpath:position"]
+      ],
+      "value": "12345"
+    }, {
+      "id": "b6068b94-833f-4673-82d1-bc775f5d5385",
+      "comment": "",
+      "command": "select",
+      "target": "id=cardType",
+      "targets": [],
+      "value": "label=American Express"
+    }, {
+      "id": "c79bf5db-e7f5-41d7-b634-cd476dae451c",
+      "comment": "",
+      "command": "type",
+      "target": "id=creditCardNumber",
+      "targets": [
+        ["id=creditCardNumber", "id"],
+        ["name=creditCardNumber", "name"],
+        ["css=#creditCardNumber", "css:finder"],
+        ["xpath=//input[@id='creditCardNumber']", "xpath:attributes"],
+        ["xpath=//div[7]/div/input", "xpath:position"]
+      ],
+      "value": "12345678"
+    }, {
+      "id": "3e6c40b2-6042-4d4b-b224-29c7aa2c8d47",
+      "comment": "",
+      "command": "type",
+      "target": "id=creditCardMonth",
+      "targets": [
+        ["id=creditCardMonth", "id"],
+        ["name=creditCardMonth", "name"],
+        ["css=#creditCardMonth", "css:finder"],
+        ["xpath=//input[@id='creditCardMonth']", "xpath:attributes"],
+        ["xpath=//div[8]/div/input", "xpath:position"]
+      ],
+      "value": "12"
+    }, {
+      "id": "f6ec6393-7aec-4a1f-8c80-cb11b2e74582",
+      "comment": "",
+      "command": "type",
+      "target": "id=creditCardYear",
+      "targets": [
+        ["id=creditCardYear", "id"],
+        ["name=creditCardYear", "name"],
+        ["css=#creditCardYear", "css:finder"],
+        ["xpath=//input[@id='creditCardYear']", "xpath:attributes"],
+        ["xpath=//div[9]/div/input", "xpath:position"]
+      ],
+      "value": "2018"
+    }, {
+      "id": "a9db031a-1cfb-465a-abc4-2bde48ca1ac8",
+      "comment": "",
+      "command": "type",
+      "target": "id=nameOnCard",
+      "targets": [
+        ["id=nameOnCard", "id"],
+        ["name=nameOnCard", "name"],
+        ["css=#nameOnCard", "css:finder"],
+        ["xpath=//input[@id='nameOnCard']", "xpath:attributes"],
+        ["xpath=//div[10]/div/input", "xpath:position"]
+      ],
+      "value": "John Smith"
+    }, {
+      "id": "9f8ba892-9522-43e6-91d1-d46accbc1097",
       "comment": "",
       "command": "click",
       "target": "css=.btn-primary",
@@ -161,18 +203,7 @@
       ],
       "value": ""
     }, {
-      "id": "5d5d5336-6bb7-4a57-b19f-69d0f17e45d8",
-      "comment": "",
-      "command": "click",
-      "target": "css=h1",
-      "targets": [
-        ["css=h1", "css:finder"],
-        ["xpath=//h1", "xpath:position"],
-        ["xpath=//h1[contains(.,'Thank you for your purchase today!')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
-      "id": "7d2a433d-607d-417e-b94f-74c2a2ea7ef6",
+      "id": "caf09439-f654-48a2-93bd-34d3db39fedd",
       "comment": "",
       "command": "assertText",
       "target": "css=h1",
@@ -183,7 +214,7 @@
       ],
       "value": "Thank you for your purchase today!"
     }, {
-      "id": "be495370-5c62-43e3-a332-bd3c3a6a04a0",
+      "id": "e8ee1fb4-924e-4ac4-b0e3-d8ecbdc82bb3",
       "comment": "",
       "command": "assertTitle",
       "target": "BlazeDemo Confirmation",
@@ -192,7 +223,7 @@
     }]
   }],
   "suites": [{
-    "id": "687e0a7a-1c38-46e3-81bd-c65fc7cf2a29",
+    "id": "4cb6cfd1-b935-4d4a-9693-43d39022703a",
     "name": "Default Suite",
     "persistSession": false,
     "parallel": false,
