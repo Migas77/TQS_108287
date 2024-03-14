@@ -19,6 +19,7 @@ public class CalculatorSteps {
 
     @Given("^a calculator I just turned on$")
     public void setup() {
+        log.debug("Instantiating calculator");
         calc = new Calculator();
     }
 
