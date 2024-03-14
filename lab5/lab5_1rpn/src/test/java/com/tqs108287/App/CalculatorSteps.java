@@ -65,7 +65,7 @@ public class CalculatorSteps {
     @Then("the result is Infinity")
     public void the_result_is_infinity() {
         double value = calc.value().doubleValue();
-        log.debug("Result: {} (is infinite)", value);
+        log.debug("Result: {} (expected value is infinite)", value);
         assertTrue(Double.isInfinite(value));
     }
 }
