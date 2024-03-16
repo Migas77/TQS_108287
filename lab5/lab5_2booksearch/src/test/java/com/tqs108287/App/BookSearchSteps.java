@@ -19,7 +19,7 @@ public class BookSearchSteps {
 
     static final Logger log = getLogger(lookup().lookupClass());
     private Library library;
-    private List<Book> result;
+    private Library.BookFinder bookFinder;
 
     /*
 	create a registered type named iso8601Date to map a string pattern from the feature
@@ -47,36 +47,39 @@ public class BookSearchSteps {
     @Given("the library has the following books")
     public void theLibraryHasTheFollowingBooks(List<Book> books) {
         library = new Library(books);
+        bookFinder = new Library.BookFinder();
     }
 
     @Then("there are found the following book titles")
     public void thereAreFoundTheFollowingBookTitles(List<String> bookTitles) {
-        List<String> resultBookTitles = result.stream().map(Book::getTitle).toList();
+        List<String> resultBookTitles = library.findBooks(bookFinder).stream().map(Book::getTitle).toList();
         log.debug("Result: {} (expected {})", resultBookTitles, bookTitles);
         assertEquals(resultBookTitles, bookTitles);
     }
 
 
     @When("the customer searches for books published between {int} and {int}")
-    public void theCustomerSearchesForBooksPublishedBetweenAnd(int arg0, int arg1) {
-        LocalDate date0 = Utils.getFirstDateOfYear(arg0);
-        LocalDate date1 = Utils.getLastDateOfYear(arg1);
-        log.debug("Searching books between {} and {}", date0, date1);
-        result = library.findBooksBetweenDates(date0, date1);
+    public void theCustomerSearchesForBooksPublishedBetweenYears(int arg0, int arg1) {
+        log.debug("Searching books between years {} (inclusive) and {} (exclusive)", arg0, arg1);
+        bookFinder.BetweenYears(arg0, arg1);
+    }
+
+    @When("the customer searches for books published between {iso8601Date} and {iso8601Date}")
+    public void theCustomerSearchesForBooksPublishedBetweenDates(LocalDate date0, LocalDate date1) {
+        log.debug("Searching books between dates {} (inclusive) and {} (exclusive)", date0, date1);
+        bookFinder.BetweenDates(date0, date1);
     }
 
     @When("the customer searches for books published by {string}")
     public void theCustomerSearchesForBooksPublishedByAuthor(String authorName) {
         log.debug("Searching books of author: {}", authorName);
-        result = library.findBooksByAuthor(authorName);
-        log.debug("result: {}", result);
+        bookFinder.ByAuthor(authorName);
     }
 
     @When("the customer searches for books of category {string}")
     public void theCustomerSearchesForBooksOfCategory(String category) {
         log.debug("Searching books of category: {}", category);
-        result = library.findBooksByCategory(category);
-        log.debug("result: {}", result);
+        bookFinder.ByCategory(category);
     }
 }
 

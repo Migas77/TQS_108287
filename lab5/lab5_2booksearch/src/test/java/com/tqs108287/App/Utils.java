@@ -16,11 +16,4 @@ public class Utils {
         return LocalDate.parse(date);
     }
 
-    public static LocalDate getFirstDateOfYear(int year){
-        return LocalDate.ofYearDay(year, 1);
-    }
-
-    public static LocalDate getLastDateOfYear(int year){
-        return LocalDate.ofYearDay(year, 1).with(lastDayOfYear());
-    }
 }
