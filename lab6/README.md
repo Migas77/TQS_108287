@@ -9,8 +9,8 @@
   <table>
     <tr>
       <th width="20%">Issue</th>
-      <th width="40%">Problem Description</th>
-      <th width="40%">How to solve</th>
+      <th width="60%">Problem Description</th>
+      <th width="20%">How to solve</th>
     </tr>
     <tr>
       <td>Bug</td>
