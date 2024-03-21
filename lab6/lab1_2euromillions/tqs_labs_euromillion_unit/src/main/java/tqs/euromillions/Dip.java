@@ -1,7 +1,6 @@
 package tqs.euromillions;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -61,14 +60,16 @@ public class Dip {
 
 
         Dip randomDip = new Dip();
-        for (int i = 0; i < NUMBERS_REQUIRED; ) {
+        int i = 0;
+        while (i < NUMBERS_REQUIRED){
             int candidate = generator.nextInt(NUMBERS_RANGE_MAX) + 1;
             if (!randomDip.getNumbersColl().contains(candidate)) {
                 randomDip.getNumbersColl().add(candidate);
                 i++;
             }
         }
-        for (int i = 0; i < STARS_REQUIRED; ) {
+        i = 0;
+        while (i < STARS_REQUIRED){
             int candidate = generator.nextInt(STARS_RANGE_MAX) + 1;
             if (!randomDip.getStarsColl().contains(candidate)) {
                 randomDip.getStarsColl().add(candidate);

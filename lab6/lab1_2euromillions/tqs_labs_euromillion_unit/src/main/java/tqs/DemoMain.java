@@ -21,7 +21,8 @@ public class DemoMain {
         myBet.appendDip(Dip.generateRandomDip());
         myBet.appendDip(Dip.generateRandomDip());
         myBet.appendDip(Dip.generateRandomDip());
-        log.info("Betting with three random bets \n{} ", myBet.format());
+        if (log.isInfoEnabled())
+            log.info("Betting with three random bets \n{} ", myBet.format()); // this is compliant, because it will not evaluate if log level is above info.
 
         // simulate a random draw
         EuromillionsDraw draw = EuromillionsDraw.generateRandomDraw();
