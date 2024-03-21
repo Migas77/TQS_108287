@@ -10,57 +10,105 @@
 <table>
 <tr>
 <th align="center">
-<img width="441" height="1">
+<img width="100" height="1">
 <p> 
 <small>
-EXAMPLE TEXT
+Issue
 </small>
 </p>
 </th>
 <th align="center">
-<img width="441" height="1">
+<img width="391" height="1">
 <p> 
 <small>
-EXAMPLE TEXT
+Problem Description
+</small>
+</p>
+</th>
+<th align="center">
+<img width="391" height="1">
+<p> 
+<small>
+How to Solve
 </small>
 </p>
 </th>
 </tr>
 <tr>
 <td>
-<!-- REMOVE THE BACKSLASHES -->
-\```jsonc
-{
-  "foo": [
-    {
-      "bar": "hello world"
-    }
-  ]
-}
-\```
+Bug
+</td>
+<td>
+There are no bugs.
+</td>
+<td>
+There are no bugs.
+</td>
+</tr>
+<tr>
+<td>
+Vulnerability
+</td>
+<td>
+There are no vulnerabilities.
+</td>
+<td>
+There are no vulnerabilities.
+</td>
+</tr>
+<tr>
+<td>
+
+Code smell (major) - **Invoke method(s) only conditionally.**
 
 </td>
 <td>
-<!-- REMOVE THE BACKSLASHES -->
-\```jsonc
-{
-  "foo": [
-    {
-      "bar": "hello world"
-    }
-  ]
-}
-\```
+
+Some method calls can effectively be "no-ops", **meaning that the invoked method does nothing, based on the application’s configuration (eg: debug logs in production). However, even if the method effectively does nothing, its arguments may still need to evaluated before the method is called. Similarly, passing concatenated strings into a logging method can also incur a needless performance hit because the concatenation will be performed every time the method is called, whether or not the log level is low enough to show the message.** Instead, you should structure your code to pass static or pre-computed values into Preconditions conditions check and logging calls. Specifically, the built-in string formatting should be used instead of string concatenation, and if the message is the result of a method call, then Preconditions should be skipped altogether, and the relevant exception should be conditionally thrown instead. **TLDR: In this case, string format is performed regardless of the log level**
+
+</td>
+<td>
+
+**Old Code:** 
+```java
+log.info("Betting with three random bets \n{} ", myBet.format());
+```
+**New Code:** 
+```java
+if (log.isInfoEnabled())
+    log.info("Betting with three random bets \n{} ", myBet.format());
+// this is compliant, because it will not evaluate if log level is above info.
+```
 
 </td>
 </tr>
 <tr>
-<td align="center">
-Column 1
+<td>
+
+Code smell (major) - **Remove this unused import 'java.security.NoSuchAlgorithmException'.**
+
 </td>
-<td align="center">
-Column 2
+<td>
+There are no bugs.
 </td>
+<td>
+There are no bugs.
+</td>
+
+</tr>
+<tr>
+<td>
+
+Code smell (major) - **Refactor the code in order to not assign to this loop counter from within the loop body.**
+
+</td>
+<td>
+There are no bugs.
+</td>
+<td>
+There are no bugs.
+</td>
+
 </tr>
 </table>
 
