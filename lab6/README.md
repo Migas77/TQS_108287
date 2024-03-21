@@ -6,33 +6,33 @@
     - **New code is sufficiently covered by test (Coverage is greather than or equal to  80.0%)** - coverage is 75%
     - **New code has limited duplication(Duplicated Lines (%) is less than or equal to  3.0%)** - With 0.0% duplication this is the only parameter met. 
 - **6.1.f) Explore the analysis results and complete with a few sample issues, as applicable.**
-  <table>
-    <tr>
-      <th width="20%">Issue</th>
-      <th width="60%">Problem Description</th>
-      <th width="20%">How to solve</th>
-    </tr>
-    <tr>
-      <td>Bug</td>
-      <td>There are no bugs</td>
-      <td>There are no bugs</td>
-    </tr>
-    <tr>
-      <td>Vulnerability</td>
-      <td>There are no vulnerabilities</td>
-      <td>There are no vulnerabilities</td>
-    </tr>
-    <tr>
-      <td>Code smell (major) - <b>Invoke method(s) only conditionally.</b></td>
-      <td>Some method calls can effectively be "no-ops", <b>meaning that the invoked method does nothing, based on the application’s configuration (eg: debug logs in production). However, even if the method effectively does nothing, its arguments may still need to evaluated before the method is called. Similarly, passing concatenated strings into a logging method can also incur a needless performance hit because the concatenation will be performed every time the method is called, whether or not the log level is low enough to show the message.</b> Instead, you should structure your code to pass static or pre-computed values into Preconditions conditions check and logging calls. Specifically, the built-in string formatting should be used instead of string concatenation, and if the message is the result of a method call, then Preconditions should be skipped altogether, and the relevant exception should be conditionally thrown instead. <b>TLDR: In this case, string format is performed regardless of the log level</b></td>
-      <td>
-        <b>Old Code:</b>
-        <pre><code>log.info("Betting with three random bets \n{} ", myBet.format());</code></pre><br/>
-        <b>New Code:</b>
-        <pre><code>if (log.isInfoEnabled())<br/>log.info("Betting with three random bets \n{} ", myBet.format()); // this is compliant, because it will not evaluate if log level is above info.</code></pre><br/>
-    </td>
-    </tr>
-  </table>
+<table>
+<tr>
+<th width="20%">Issue</th>
+<th width="60%">Problem Description</th>
+<th width="20%">How to solve</th>
+</tr>
+<tr>
+<td>Bug</td>
+<td>There are no bugs</td>
+<td>There are no bugs</td>
+</tr>
+<tr>
+<td>Vulnerability</td>
+<td>There are no vulnerabilities</td>
+<td>There are no vulnerabilities</td>
+</tr>
+<tr>
+<td>Code smell (major) - <b>Invoke method(s) only conditionally.</b></td>
+<td>Some method calls can effectively be "no-ops", <b>meaning that the invoked method does nothing, based on the application’s configuration (eg: debug logs in production). However, even if the method effectively does nothing, its arguments may still need to evaluated before the method is called. Similarly, passing concatenated strings into a logging method can also incur a needless performance hit because the concatenation will be performed every time the method is called, whether or not the log level is low enough to show the message.</b> Instead, you should structure your code to pass static or pre-computed values into Preconditions conditions check and logging calls. Specifically, the built-in string formatting should be used instead of string concatenation, and if the message is the result of a method call, then Preconditions should be skipped altogether, and the relevant exception should be conditionally thrown instead. <b>TLDR: In this case, string format is performed regardless of the log level</b></td>
+<td>
+<b>Old Code:</b>
+<pre><code>log.info("Betting with three random bets \n{} ", myBet.format());</code></pre><br/>
+<b>New Code:</b>
+<pre><code>if (log.isInfoEnabled())<br/>log.info("Betting with three random bets \n{} ", myBet.format()); // this is compliant, because it will not evaluate if log level is above info.</code></pre><br/>
+</td>
+</tr>
+</table>
   
 | Issue                                                                                                             | Problem Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | How to solve                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 |-------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
