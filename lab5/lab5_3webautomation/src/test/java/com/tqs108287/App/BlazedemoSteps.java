@@ -6,8 +6,6 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.github.bonigarcia.seljup.SeleniumJupiter;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,7 +16,6 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.slf4j.LoggerFactory.getLogger;
 
-@ExtendWith(SeleniumJupiter.class)
 public class BlazedemoSteps {
 
     static final Logger log = getLogger(lookup().lookupClass());
