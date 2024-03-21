@@ -26,26 +26,38 @@ How to Solve
 </p>
 </th>
 </tr>
-<tr>
-<td>
-There are no bugs.
-</td>
-<td>
-There are no bugs.
-</td>
-</tr>
-<tr>
-<td>
-There are no vulnerabilities.
-</td>
-<td>
-There are no vulnerabilities.
-</td>
-</tr>
+
 <tr>
 <td>
 
-Code smell (major) - **Invoke method(s) only conditionally.**
+**Bug**
+
+There are no bugs.
+</td>
+<td>
+There are no bugs.
+</td>
+</tr>
+
+<tr>
+<td>
+
+**Vulnerability**
+
+There are no vulnerabilities.
+</td>
+<td>
+There are no vulnerabilities.
+</td>
+</tr>
+
+<tr>
+<td>
+
+**Code smell (major)** 
+
+**Invoke method(s) only conditionally.**
+
 Some method calls can effectively be "no-ops", **meaning that the invoked method does nothing, based on the application’s configuration (eg: debug logs in production). However, even if the method effectively does nothing, its arguments may still need to evaluated before the method is called. Similarly, passing concatenated strings into a logging method can also incur a needless performance hit because the concatenation will be performed every time the method is called, whether or not the log level is low enough to show the message.** Instead, you should structure your code to pass static or pre-computed values into Preconditions conditions check and logging calls. Specifically, the built-in string formatting should be used instead of string concatenation, and if the message is the result of a method call, then Preconditions should be skipped altogether, and the relevant exception should be conditionally thrown instead. **TLDR: In this case, string format is performed regardless of the log level**
 
 </td>
@@ -64,32 +76,63 @@ if (log.isInfoEnabled())
 
 </td>
 </tr>
+
 <tr>
 <td>
 
-Code smell (major) - **Remove this unused import 'java.security.NoSuchAlgorithmException'.**
-There are no bugs.
+**Code smell (major)**
+
+**Remove this unused import 'java.security.NoSuchAlgorithmException'.**
+
+Unnecessary imports refer to importing types that are not used or referenced anywhere in the code.
 
 </td>
 <td>
-There are no bugs.
-</td>
 
+**Old Code:**
+```java
+import java.security.NoSuchAlgorithmException;
+```
+
+**New Code:** Just remove the line :)
+
+</td>
 </tr>
+
 <tr>
-<td>
-
-
-
-</td>
 <td>
 
 Code smell (major) - **Refactor the code in order to not assign to this loop counter from within the loop body.**
-There are no bugs.
+
+A for loop termination condition should test the loop counter against an invariant value that does not change during the execution of the loop. Invariant termination conditions make the program logic easier to understand and maintain.
 
 </td>
 <td>
-There are no bugs.
+
+**Old Code:** 
+```java
+for (int i = 0; i < NUMBERS_REQUIRED; ) {
+int candidate = generator.nextInt(NUMBERS_RANGE_MAX) + 1;
+    if (!randomDip.getNumbersColl().contains(candidate)) {
+        randomDip.getNumbersColl().add(candidate);
+        i++;
+    }
+}
+```
+
+**New Code:**
+```java
+int i = 0;
+while (i < NUMBERS_REQUIRED){
+int candidate = generator.nextInt(NUMBERS_RANGE_MAX) + 1;
+    if (!randomDip.getNumbersColl().contains(candidate)) {
+        randomDip.getNumbersColl().add(candidate);
+        i++;
+    }
+}
+```
+
+
 </td>
 
 </tr>
