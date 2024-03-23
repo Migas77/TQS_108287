@@ -30,7 +30,7 @@ How to Solve
 <tr>
 <td>
 
-**Bug**
+``Bug``
 
 There are no bugs.
 </td>
@@ -42,7 +42,7 @@ There are no bugs.
 <tr>
 <td>
 
-**Vulnerability**
+``Vulnerability``
 
 There are no vulnerabilities.
 </td>
@@ -54,7 +54,7 @@ There are no vulnerabilities.
 <tr>
 <td>
 
-**Code smell (major)** 
+``Code smell (major)`` 
 
 **Invoke method(s) only conditionally.**
 
@@ -80,7 +80,7 @@ if (log.isInfoEnabled())
 <tr>
 <td>
 
-**Code smell (major)**
+``Code smell (major)``
 
 **Remove this unused import 'java.security.NoSuchAlgorithmException'.**
 
@@ -102,7 +102,9 @@ import java.security.NoSuchAlgorithmException;
 <tr>
 <td>
 
-Code smell (major) - **Refactor the code in order to not assign to this loop counter from within the loop body.**
+``Code smell (major)``
+
+**Refactor the code in order to not assign to this loop counter from within the loop body.**
 
 A for loop termination condition should test the loop counter against an invariant value that does not change during the execution of the loop. Invariant termination conditions make the program logic easier to understand and maintain.
 
