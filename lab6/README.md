@@ -162,7 +162,7 @@ int candidate = generator.nextInt(NUMBERS_RANGE_MAX) + 1;
   - Remove this 'public' modifier. (src/.../com/tqs108287/app/lab3_2cars/CarService_UnitTest.java)
   - Use assertThat(actual).isPresent() instead. (src/.../com/tqs108287/app/lab3_2cars/CarService_UnitTest.java)
   - Use assertThat(actual).isNotPresent() or assertThat(actual).isEmpty() instead. (src/.../com/tqs108287/app/lab3_2cars/CarService_UnitTest.java)
-- ScreenShot Issues
+- ScreenShot Issues after fix of code smells
 
 ![ScreenShot Issues](../images/report_issues_cars_after.png)
 
