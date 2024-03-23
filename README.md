@@ -9,3 +9,4 @@ Miguel Belchior Figueiredo - 108287
 - [Lab 3](lab3)
 - [Lab 4](lab4)
 - [Lab 5](lab5)
+- [Lab 6](lab6)
