@@ -2,7 +2,6 @@ package com.tqs108287.app.lab3_2cars.data;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 

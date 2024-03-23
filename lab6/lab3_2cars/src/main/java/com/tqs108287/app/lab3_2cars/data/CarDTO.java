@@ -5,7 +5,7 @@ public class CarDTO {
     private String maker;
     private String model;
 
-    public static CarDTO fromEmployeeEntity(Car car){
+    public static CarDTO fromCarEntity(Car car){
         return new CarDTO(car.getCarId(), car.getMaker(), car.getModel());
     }
 

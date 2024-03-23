@@ -145,7 +145,7 @@ int candidate = generator.nextInt(NUMBERS_RANGE_MAX) + 1;
 - [Technical Debt Definition](https://docs.sonarsource.com/sonarqube/latest/user-guide/metric-definitions/#maintainability): A measure of effort to fix all code smells. Which means that in the previous example sonarqube estimates that one programmer would take 22 minutes to fix all code smells.
 - ScreenShot Dashboard
 
-![ScreenShot Dashboard](../images/report_dashboard_cars_before.png)
+![ScreenShot Dashboard](../images/report_dashboard_overall__cars_before.png)
 - ScreenShot Issues (with the indication of technical debt)
 
 ![ScreenShot Issues](../images/report_issues_cars_before.png)
@@ -162,7 +162,34 @@ int candidate = generator.nextInt(NUMBERS_RANGE_MAX) + 1;
   - Remove this 'public' modifier. (src/.../com/tqs108287/app/lab3_2cars/CarService_UnitTest.java)
   - Use assertThat(actual).isPresent() instead. (src/.../com/tqs108287/app/lab3_2cars/CarService_UnitTest.java)
   - Use assertThat(actual).isNotPresent() or assertThat(actual).isEmpty() instead. (src/.../com/tqs108287/app/lab3_2cars/CarService_UnitTest.java)
+- ScreenShot Issues (with the indication of technical debt)
 
+![ScreenShot Issues](../images/report_issues_cars_after.png)
+
+- However, as you can see in the following image the new code (the 4 files I changed to fix the issues) didn't pass the quality gate as coverage on these files is under 80%. Thus, displaying the previously mentioned behaviour as only new code triggered a warning despite in the overall code the coverage also not being equal or above to 80% (as you will se in the next exercise). 
+
+![ScreenShot Dashboard New Code](../images/report_dashboard_newcode_cars_after.png)
+![ScreenShot New Code Coverage](../images/report_coverage_newcode_cars_after.png)
+
+### 6.2.c) Run the static analysis and discuss the coverage values on the SonarQube dashboard (how many lines are “not covered”? And how many conditions? Are the values good?...)
+- This was the obtained coverage for the project:
+
+![ScreenShot Overall Code Coverage](../images/report_coverage_overall_cars_after.png)
+
+- Despite appearing like a bad number the coverage is not bad in this project because of the following aspects:
+  - In Lab32carsApplication.java, we have a coverage of 33.3% related to running the application which we don't need to test.
+  ![ScreenShot Lab32carsApplication Coverage](../images/report_coverage_overall_cars_after_lab32application.png)
+  - In Car.java, we have a coverage of 42.9% related to generated methods like equals, hashcode, setters and toString.
+  ![ScreenShot Car Coverage](../images/report_coverage_overall_cars_after_car.png)
+  - In CarDTO.java, we have a coverage of 56.3% related to generated methods like setters. The only important code which hasn't been covered is the fromCarEntity function.
+  ![ScreenShot CarDTO Coverage](../images/report_coverage_overall_cars_after_carDTO.png)
+  - In CarManagerService.java, we have a coverage of 85.7% which is good overall despite not having covered save method.
+  ![ScreenShot CarManagerService Coverage](../images/report_coverage_overall_cars_after_CarManagerService.png)
+  - In CarRestController.java, we have a coverage of 100% :)
+- Conclusion: 
+  - Uncovered Lines: 21
+  - Uncovered Conditions: 184
+  - The results are overall good because of previously mentioned reasons.
 
 ---
 

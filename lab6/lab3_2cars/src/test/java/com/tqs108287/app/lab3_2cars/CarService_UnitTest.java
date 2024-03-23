@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class CarService_UnitTest {
+class CarService_UnitTest {
 
     @Mock(lenient = true)
     private CarRepository carRepository;
@@ -48,7 +48,7 @@ public class CarService_UnitTest {
 
         Optional<Car> found = carManagerService.getCarDetails(id);
 
-        assertThat(found.isPresent()).isTrue();
+        assertThat(found).isPresent();
         assertThat(found.get().getCarId()).isEqualTo(id);
         verify(carRepository, times(1)).findByCarId(Mockito.anyLong());
     }
@@ -59,7 +59,7 @@ public class CarService_UnitTest {
 
         Optional<Car> found = carManagerService.getCarDetails(id);
 
-        assertThat(found.isPresent()).isFalse();
+        assertThat(found).isNotPresent();
         verify(carRepository, times(1)).findByCarId(Mockito.anyLong());
     }
 

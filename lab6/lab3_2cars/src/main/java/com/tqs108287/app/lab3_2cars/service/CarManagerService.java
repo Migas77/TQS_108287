@@ -25,7 +25,7 @@ public class CarManagerService {
 
     public List<Car> getCarsByMaker(String maker){
         return carRepository.findByMaker(maker);
-    };
+    }
 
     public Optional<Car> getCarDetails(Long carId){
         // if null -> empty optional
