@@ -1,11 +1,11 @@
 ## ANSWERS
-- **6.1.e) Has your project passed the defined quality gate?**
-  - Yes. It passed the quality gate because it checks for the quality of the new code (default: clean as you code). Because of this default the initial baseline passes the quality gate despite not complying fully with its demands. According to the default quality gate "Sonar Way" new code will be clean if:
-    - **New code has 0 issues** - It has 18 issues
-    - **All new security hotspots are reviewed** - There is one not reviewed security hotspot
-    - **New code is sufficiently covered by test (Coverage is greather than or equal to  80.0%)** - coverage is 75%
-    - **New code has limited duplication(Duplicated Lines (%) is less than or equal to  3.0%)** - With 0.0% duplication this is the only parameter met. 
-- **6.1.f) Explore the analysis results and complete with a few sample issues, as applicable.**
+### 6.1.e) Has your project passed the defined quality gate?
+- Yes. It passed the quality gate because it checks for the quality of the new code (default: clean as you code). Because of this default the initial baseline passes the quality gate despite not complying fully with its demands. According to the default quality gate "Sonar Way" new code will be clean if:
+  - **New code has 0 issues** - It has 18 issues
+  - **All new security hotspots are reviewed** - There is one not reviewed security hotspot
+  - **New code is sufficiently covered by test (Coverage is greather than or equal to  80.0%)** - coverage is 75%
+  - **New code has limited duplication(Duplicated Lines (%) is less than or equal to  3.0%)** - With 0.0% duplication this is the only parameter met. 
+### 6.1.f) Explore the analysis results and complete with a few sample issues, as applicable.
 
 <table>
 <tr>
@@ -139,6 +139,30 @@ int candidate = generator.nextInt(NUMBERS_RANGE_MAX) + 1;
 
 </tr>
 </table>
+
+### 6.2.a) Take note of the technical debt found. Explain what this value means. Document the analysis findings with a screenshot (of the sonar dashboard for this project).
+- Technical Debt Found: 22 min. 
+- [Technical Debt Definition](https://docs.sonarsource.com/sonarqube/latest/user-guide/metric-definitions/#maintainability): A measure of effort to fix all code smells. Which means that in the previous example sonarqube estimates that one programmer would take 22 minutes to fix all code smells.
+- ScreenShot Dashboard
+
+![ScreenShot Dashboard](../images/report_dashboard_cars_before.png)
+- ScreenShot Issues (with the indication of technical debt)
+
+![ScreenShot Issues](../images/report_issues_cars_before.png)
+
+### 6.2.b) Analyze the reported problems and be sure to correct the severe code smells reported (critical and major). Note: if you used the Entity data type as parameter in the API methods, you will likely get the vulnerability “Persistent entities should not be used as arguments”.
+
+- I already had used DTO's as the parameter, so I didn't get the vulnerability “Persistent entities should not be used as arguments”. These were the issues found in the code (9 code smells):
+  - Remove this unused import 'java.util.Optional'. (src/.../app/lab3_2cars/boundary/CarRestController.java)
+  - Remove this unused import 'jakarta.validation.constraints.Size'. (src/.../tqs108287/app/lab3_2cars/data/Car.java)
+  - Remove this empty statement. (src/.../app/lab3_2cars/service/CarManagerService.java)
+  - Remove this 'public' modifier. (src/.../com/tqs108287/app/lab3_2cars/CarRepositoryTest.java)
+  - Remove this 'public' modifier. (src/.../com/tqs108287/app/lab3_2cars/CarRestControllerIT.java)
+  - Remove this 'public' modifier. (src/.../com/tqs108287/app/lab3_2cars/CarRestController_WithMockServiceTest.java)
+  - Remove this 'public' modifier. (src/.../com/tqs108287/app/lab3_2cars/CarService_UnitTest.java)
+  - Use assertThat(actual).isPresent() instead. (src/.../com/tqs108287/app/lab3_2cars/CarService_UnitTest.java)
+  - Use assertThat(actual).isNotPresent() or assertThat(actual).isEmpty() instead. (src/.../com/tqs108287/app/lab3_2cars/CarService_UnitTest.java)
+
 
 ---
 
