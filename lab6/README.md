@@ -188,7 +188,6 @@ int candidate = generator.nextInt(NUMBERS_RANGE_MAX) + 1;
   - In CarRestController.java, we have a coverage of 100% :)
 - Conclusion: 
   - Uncovered Lines: 21
-  - Uncovered Conditions: 184
   - The results are overall good because of previously mentioned reasons.
 
 ### 6.3.a) Define a custom quality gate to this project. Feel free to mix the metrics but explain your chosen configuration.
