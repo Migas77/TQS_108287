@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - "hw1/hw1_bustickets/**"
+      - "hw1/**"
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
@@ -36,4 +36,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Migas77_TQS_108287
+        run: cd hw1/hw1_bustickets && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Migas77_TQS_108287
