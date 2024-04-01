@@ -17,6 +17,9 @@
 		<java.version>17</java.version>
 		<sonar.organization>migas77</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
+		<slf4j.version>2.0.12</slf4j.version>
+		<logback.version>1.5.3</logback.version>
 	</properties>
 
 	<dependencies>
@@ -44,6 +47,17 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<!-- logging libraries -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
 		</dependency>
 	</dependencies>
 
