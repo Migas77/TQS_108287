@@ -2,14 +2,12 @@ package com.tqs108287.app.hw1_bustickets.boundary;
 
 import com.tqs108287.app.hw1_bustickets.entities.Trip;
 import com.tqs108287.app.hw1_bustickets.service.ITripService;
-import com.tqs108287.app.hw1_bustickets.service.impl.TripService;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,9 +31,8 @@ public class TripRestController {
 
     @GetMapping("{id}")
     public ResponseEntity<Trip> getTripDetailsById(@PathVariable Long id){
-        return null;
+        Optional<Trip> tripOpt = tripService.getTripById(id);
+        return tripOpt.map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
-    // upcoming trips
 
 }

@@ -4,6 +4,7 @@ import com.tqs108287.app.hw1_bustickets.boundary.TripRestController;
 import com.tqs108287.app.hw1_bustickets.entities.*;
 import com.tqs108287.app.hw1_bustickets.service.ITripService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
+
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.mockito.Mockito.*;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -111,5 +115,35 @@ public class TripControllerWithMockServiceTest {
         verify(service, times(1)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
     }
 
+    @Test
+    void whenGetTripWithValidId_thenReturnTripDetails() {
+        when(service.getTripById(anyLong())).thenReturn(Optional.of(trip_fromLisboa_toPorto));
 
+        RestAssuredMockMvc.
+                given().
+                        mockMvc(mockMvc).
+                when().
+                        get("api/trips/{id}", "1").
+                then().
+                        statusCode(200).
+                        body("id", is(1));
+
+        verify(service, times(1)).getTripById(anyLong());
+    }
+
+    @Test
+    void whenGetTripWithInValidId_thenReturnStatus404() {
+        when(service.getTripById(anyLong())).thenReturn(Optional.empty());
+
+        RestAssuredMockMvc.
+                given().
+                        mockMvc(mockMvc).
+                when().
+                        get("api/trips/{id}", "1").
+                then().
+                        body(is(Matchers.emptyOrNullString())).
+                        statusCode(HttpStatus.SC_NOT_FOUND);
+
+        verify(service, times(1)).getTripById(anyLong());
+    }
 }
