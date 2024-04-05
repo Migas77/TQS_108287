@@ -8,12 +8,11 @@ import lombok.*;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "Leg")
+@Table(name = "leg")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Leg {
 
     @Id
@@ -28,4 +27,10 @@ public class Leg {
 
     @NotNull
     private LocalTime legTime;
+
+    public Leg(Stop originStop, Stop destinationStop, LocalTime legTime) {
+        this.originStop = originStop;
+        this.destinationStop = destinationStop;
+        this.legTime = legTime;
+    }
 }

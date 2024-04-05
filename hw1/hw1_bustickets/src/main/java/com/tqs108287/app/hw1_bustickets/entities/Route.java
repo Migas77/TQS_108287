@@ -6,12 +6,11 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "Route")
+@Table(name = "route")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Route {
 
     @Id
@@ -22,4 +21,7 @@ public class Route {
     @OrderColumn(name = "legs_index")
     private List<Leg> legs;
 
+    public Route(List<Leg> legs) {
+        this.legs = legs;
+    }
 }

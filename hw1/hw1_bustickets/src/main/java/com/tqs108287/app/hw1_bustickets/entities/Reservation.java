@@ -7,12 +7,11 @@ import lombok.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Reservation")
+@Table(name = "reservation")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Reservation {
 
     @Id

@@ -4,19 +4,24 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "Stop")
+@Table(name = "stop")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Stop {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Site site;
+    @Column(unique = true)
+    private String name;
 
+    private String district;
+
+    public Stop(String name, String district) {
+        this.name = name;
+        this.district = district;
+    }
 }

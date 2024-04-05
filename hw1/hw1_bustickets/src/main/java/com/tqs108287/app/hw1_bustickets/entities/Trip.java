@@ -14,7 +14,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Embeddable
 public class Trip {
 
@@ -29,12 +28,19 @@ public class Trip {
     private Set<Reservation> reservations;
 
     @NotNull
+    private Integer numberOfSeats;
+
+    @NotNull
     private Float priceEuros;
 
     @NotNull
     private LocalDateTime departureTime;
 
-    @NotNull
-    private Integer numberOfSeats;
-
+    public Trip(Long id, Route route, Integer numberOfSeats, Float priceEuros, LocalDateTime departureTime) {
+        this.id = id;
+        this.route = route;
+        this.numberOfSeats = numberOfSeats;
+        this.priceEuros = priceEuros;
+        this.departureTime = departureTime;
+    }
 }
