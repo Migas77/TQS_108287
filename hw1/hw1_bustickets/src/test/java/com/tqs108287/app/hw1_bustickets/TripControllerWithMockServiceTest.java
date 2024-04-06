@@ -75,6 +75,36 @@ public class TripControllerWithMockServiceTest {
     }
 
     @Test
+    void givenManyTrips_WhenSearchFromOriginOnly_ThenReturnStatus400() {
+        RestAssuredMockMvc.
+                given().
+                        mockMvc(mockMvc).
+                        param("originId", "1").
+                when().
+                        get("api/trips").
+                then().
+                        statusCode(HttpStatus.SC_BAD_REQUEST).
+                        body(is(Matchers.emptyOrNullString()));
+
+        verify(service, times(0)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+    }
+
+    @Test
+    void givenManyTrips_WhenSearchToDestOnly_ThenReturnStatus400() {
+        RestAssuredMockMvc.
+                given().
+                        mockMvc(mockMvc).
+                        param("destinationId", "3").
+                when().
+                        get("api/trips").
+                then().
+                        statusCode(HttpStatus.SC_BAD_REQUEST).
+                        body(is(Matchers.emptyOrNullString()));
+
+        verify(service, times(0)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+    }
+
+    @Test
     void givenManyTrips_whenSearchFromOriginToDest_ThenReturnList() {
         when(service.getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
                 .thenReturn(List.of(trip_fromLisboa_toPorto, trip_fromAveiro_toPorto, trip_fromLisboa_toAveiro));
@@ -87,7 +117,7 @@ public class TripControllerWithMockServiceTest {
         when().
                 get("api/trips").
         then().
-                statusCode(200).
+                statusCode(HttpStatus.SC_OK).
                 body("size()", is(3)).
                 body("id", Matchers.containsInAnyOrder(trip_fromLisboa_toPorto.getId().intValue(), trip_fromAveiro_toPorto.getId().intValue(), trip_fromLisboa_toAveiro.getId().intValue()));
 
@@ -108,7 +138,7 @@ public class TripControllerWithMockServiceTest {
                 when().
                         get("api/trips").
                 then().
-                        statusCode(200).
+                        statusCode(HttpStatus.SC_OK).
                         body("size()", is(3)).
                         body("id", Matchers.containsInAnyOrder(trip_fromLisboa_toPorto.getId().intValue(), trip_fromLisboa_toBraga.getId().intValue(), trip_fromCoimbra_toPorto.getId().intValue()));
 
@@ -125,7 +155,7 @@ public class TripControllerWithMockServiceTest {
                 when().
                         get("api/trips/{id}", "1").
                 then().
-                        statusCode(200).
+                        statusCode(HttpStatus.SC_OK).
                         body("id", is(1));
 
         verify(service, times(1)).getTripById(anyLong());
@@ -141,8 +171,8 @@ public class TripControllerWithMockServiceTest {
                 when().
                         get("api/trips/{id}", "1").
                 then().
-                        body(is(Matchers.emptyOrNullString())).
-                        statusCode(HttpStatus.SC_NOT_FOUND);
+                        statusCode(HttpStatus.SC_NOT_FOUND).
+                        body(is(Matchers.emptyOrNullString()));
 
         verify(service, times(1)).getTripById(anyLong());
     }
