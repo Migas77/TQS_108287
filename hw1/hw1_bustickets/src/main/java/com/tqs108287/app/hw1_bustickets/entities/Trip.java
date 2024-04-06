@@ -28,15 +28,15 @@ public class Trip {
     private Set<Reservation> reservations;
 
     @NotNull
-    private Integer numberOfSeats;
+    private int numberOfSeats;
 
     @NotNull
-    private Float priceEuros;
+    private float priceEuros;
 
     @NotNull
     private LocalDateTime departureTime;
 
-    public Trip(Long id, Route route, Integer numberOfSeats, Float priceEuros, LocalDateTime departureTime) {
+    public Trip(Long id, Route route, int numberOfSeats, float priceEuros, LocalDateTime departureTime) {
         this.id = id;
         this.route = route;
         this.numberOfSeats = numberOfSeats;

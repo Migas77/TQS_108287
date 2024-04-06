@@ -22,7 +22,7 @@ public class Reservation {
     private Trip trip;
 
     @NotNull
-    private Integer seatNumber;
+    private int seatNumber;
 
     @NotNull
     private String clientName;
@@ -30,7 +30,7 @@ public class Reservation {
     @NotNull
     private String clientAddress;
 
-    public Reservation(Trip trip, Integer seatNumber, String clientName, String clientAddress) {
+    public Reservation(Trip trip, int seatNumber, String clientName, String clientAddress) {
         this.trip = trip;
         this.seatNumber = seatNumber;
         this.clientName = clientName;

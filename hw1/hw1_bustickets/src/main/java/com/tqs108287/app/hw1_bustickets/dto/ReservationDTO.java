@@ -6,12 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @Getter
 @Setter
 public class ReservationDTO {
     private Long tripId;
-    private Integer seatNumber;
+    private int seatNumber;
     private String clientName;
     private String clientAddress;
 
@@ -21,7 +23,7 @@ public class ReservationDTO {
 
     public Reservation toReservationEntity(){
         Trip trip = new Trip();
-        trip.setId(tripId); // this will definitely be a problem
+        trip.setId(tripId); // TODO this could be a problem later
         return new Reservation(trip, getSeatNumber(), getClientName(), getClientAddress());
     }
 }
