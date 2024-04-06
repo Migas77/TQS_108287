@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.mockito.Mockito.*;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -75,7 +74,7 @@ public class TripControllerWithMockServiceTest {
     }
 
     @Test
-    void givenManyTrips_WhenSearchFromOriginOnly_ThenReturnStatus400() {
+    void givenManyTrips_WhenSearchFromOriginOnly_thenReturnStatus400() {
         RestAssuredMockMvc.
                 given().
                         mockMvc(mockMvc).
@@ -90,7 +89,7 @@ public class TripControllerWithMockServiceTest {
     }
 
     @Test
-    void givenManyTrips_WhenSearchToDestOnly_ThenReturnStatus400() {
+    void givenManyTrips_WhenSearchToDestOnly_thenReturnStatus400() {
         RestAssuredMockMvc.
                 given().
                         mockMvc(mockMvc).
@@ -105,7 +104,7 @@ public class TripControllerWithMockServiceTest {
     }
 
     @Test
-    void givenManyTrips_whenSearchFromOriginToDest_ThenReturnList() {
+    void givenManyTrips_whenSearchFromOriginToDest_thenReturnList() {
         when(service.getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
                 .thenReturn(List.of(trip_fromLisboa_toPorto, trip_fromAveiro_toPorto, trip_fromLisboa_toAveiro));
 
@@ -125,7 +124,7 @@ public class TripControllerWithMockServiceTest {
     }
 
     @Test
-    void givenManyTrips_whenSearchFromOriginToDestWithDate_ThenReturnList() {
+    void givenManyTrips_whenSearchFromOriginToDestWithDate_thenReturnList() {
         when(service.getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
                 .thenReturn(List.of(trip_fromLisboa_toPorto, trip_fromLisboa_toBraga, trip_fromCoimbra_toPorto));
 
