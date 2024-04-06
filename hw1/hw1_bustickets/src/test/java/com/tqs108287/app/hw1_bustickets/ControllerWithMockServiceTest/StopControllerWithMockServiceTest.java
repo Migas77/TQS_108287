@@ -1,4 +1,4 @@
-package com.tqs108287.app.hw1_bustickets;
+package com.tqs108287.app.hw1_bustickets.ControllerWithMockServiceTest;
 
 import com.tqs108287.app.hw1_bustickets.boundary.StopRestController;
 import com.tqs108287.app.hw1_bustickets.boundary.TripRestController;
