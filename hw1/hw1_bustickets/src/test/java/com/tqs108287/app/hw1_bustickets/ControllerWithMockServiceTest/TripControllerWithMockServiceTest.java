@@ -2,6 +2,7 @@ package com.tqs108287.app.hw1_bustickets.ControllerWithMockServiceTest;
 
 import com.tqs108287.app.hw1_bustickets.boundary.TripRestController;
 import com.tqs108287.app.hw1_bustickets.entities.*;
+import com.tqs108287.app.hw1_bustickets.service.IStopService;
 import com.tqs108287.app.hw1_bustickets.service.ITripService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.apache.http.HttpStatus;
@@ -33,13 +34,17 @@ public class TripControllerWithMockServiceTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private ITripService service;
+    private ITripService tripService;
+
+    @MockBean
+    private IStopService stopService;
 
     Trip trip_fromLisboa_toPorto;
     Trip trip_fromLisboa_toBraga;
     Trip trip_fromLisboa_toAveiro;
     Trip trip_fromCoimbra_toPorto;
     Trip trip_fromAveiro_toPorto;
+    Trip trip_fromAveiro_toPorto_today;
 
     // TODO CHANGE BeforeEach later
     @BeforeEach
@@ -71,6 +76,7 @@ public class TripControllerWithMockServiceTest {
         trip_fromLisboa_toAveiro = new Trip(3L, route_fromLisboa_toAveiro, 50, 20f, LocalDateTime.of(2024, 6, 3, 10, 15));
         trip_fromCoimbra_toPorto = new Trip(4L, route_fromCoimbra_toPorto, 30, 22.5f, LocalDateTime.of(2024, 6, 2, 11, 30));
         trip_fromAveiro_toPorto = new Trip(5L, route_fromAveiro_toPorto, 50, 20f, LocalDateTime.of(2024, 6, 4, 6, 15));
+        trip_fromAveiro_toPorto_today = new Trip(6L, route_fromAveiro_toPorto, 50, 20f, LocalDateTime.now());
     }
 
     @Test
@@ -85,7 +91,8 @@ public class TripControllerWithMockServiceTest {
                         statusCode(HttpStatus.SC_BAD_REQUEST).
                         body(is(Matchers.emptyOrNullString()));
 
-        verify(service, times(0)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(stopService, times(0)).getStopById(anyLong());
+        verify(tripService, times(0)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
     }
 
     @Test
@@ -100,32 +107,56 @@ public class TripControllerWithMockServiceTest {
                         statusCode(HttpStatus.SC_BAD_REQUEST).
                         body(is(Matchers.emptyOrNullString()));
 
-        verify(service, times(0)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(stopService, times(0)).getStopById(anyLong());
+        verify(tripService, times(0)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
     }
 
     @Test
-    void givenManyTrips_whenSearchFromOriginToDest_thenReturnList() {
-        when(service.getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
-                .thenReturn(List.of(trip_fromLisboa_toPorto, trip_fromAveiro_toPorto, trip_fromLisboa_toAveiro));
+    void givenManyTrips_whenSearchFromOriginToDestInvalid_thenReturnStatus404() {
+        when(stopService.getStopById(anyLong())).thenReturn(Optional.empty());
+
+        RestAssuredMockMvc.
+                given().
+                        mockMvc(mockMvc).
+                        param("originId", "13213221").
+                        param("destinationId", "33123212").
+                when().
+                        get("api/trips").
+                then().
+                        statusCode(HttpStatus.SC_NOT_FOUND).
+                        body(is(Matchers.emptyOrNullString()));
+
+        // it calls stopService 1 time instead of 2 because of java "short-circuiting"
+        verify(stopService, times(1)).getStopById(anyLong());
+        verify(tripService, times(0)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+    }
+
+    @Test
+    void givenManyTrips_whenSearchFromOriginToDestValidWithoutDate_thenReturnList() {
+        when(stopService.getStopById(anyLong())).thenReturn(Optional.of(new Stop())); // not empty optional
+        when(tripService.getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
+                .thenReturn(List.of(trip_fromAveiro_toPorto_today));
 
         RestAssuredMockMvc.
         given().
                 mockMvc(mockMvc).
-                param("originId", "1").
-                param("destinationId", "3").
+                param("originId", "3").
+                param("destinationId", "4").
         when().
                 get("api/trips").
         then().
                 statusCode(HttpStatus.SC_OK).
-                body("size()", is(3)).
-                body("id", Matchers.containsInAnyOrder(trip_fromLisboa_toPorto.getId().intValue(), trip_fromAveiro_toPorto.getId().intValue(), trip_fromLisboa_toAveiro.getId().intValue()));
+                body("size()", is(1)).
+                body("id[0]", is(trip_fromAveiro_toPorto_today.getId().intValue()));
 
-        verify(service, times(1)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(stopService, times(2)).getStopById(anyLong());
+        verify(tripService, times(1)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
     }
 
     @Test
-    void givenManyTrips_whenSearchFromOriginToDestWithDate_thenReturnList() {
-        when(service.getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
+    void givenManyTrips_whenSearchFromOriginToDestValidWithDate_thenReturnList() {
+        when(stopService.getStopById(anyLong())).thenReturn(Optional.of(new Stop())); // not empty optional
+        when(tripService.getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
                 .thenReturn(List.of(trip_fromLisboa_toPorto, trip_fromLisboa_toBraga, trip_fromCoimbra_toPorto));
 
         RestAssuredMockMvc.
@@ -141,12 +172,13 @@ public class TripControllerWithMockServiceTest {
                         body("size()", is(3)).
                         body("id", Matchers.containsInAnyOrder(trip_fromLisboa_toPorto.getId().intValue(), trip_fromLisboa_toBraga.getId().intValue(), trip_fromCoimbra_toPorto.getId().intValue()));
 
-        verify(service, times(1)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(stopService, times(2)).getStopById(anyLong());
+        verify(tripService, times(1)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
     }
 
     @Test
     void whenGetTripWithValidId_thenReturnTripDetails() {
-        when(service.getTripById(anyLong())).thenReturn(Optional.of(trip_fromLisboa_toPorto));
+        when(tripService.getTripById(anyLong())).thenReturn(Optional.of(trip_fromLisboa_toPorto));
 
         RestAssuredMockMvc.
                 given().
@@ -157,12 +189,13 @@ public class TripControllerWithMockServiceTest {
                         statusCode(HttpStatus.SC_OK).
                         body("id", is(1));
 
-        verify(service, times(1)).getTripById(anyLong());
+        verify(stopService, times(0)).getStopById(anyLong());
+        verify(tripService, times(1)).getTripById(anyLong());
     }
 
     @Test
     void whenGetTripWithInValidId_thenReturnStatus404() {
-        when(service.getTripById(anyLong())).thenReturn(Optional.empty());
+        when(tripService.getTripById(anyLong())).thenReturn(Optional.empty());
 
         RestAssuredMockMvc.
                 given().
@@ -173,6 +206,7 @@ public class TripControllerWithMockServiceTest {
                         statusCode(HttpStatus.SC_NOT_FOUND).
                         body(is(Matchers.emptyOrNullString()));
 
-        verify(service, times(1)).getTripById(anyLong());
+        verify(stopService, times(0)).getStopById(anyLong());
+        verify(tripService, times(1)).getTripById(anyLong());
     }
 }
