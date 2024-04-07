@@ -1,6 +1,7 @@
 package com.tqs108287.app.hw1_bustickets.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -15,9 +16,12 @@ public class Stop {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @NotNull
+    @Column(unique = true, nullable = false)
     private String name;
 
+    @NotNull
+    @Column(nullable = false)
     private String district;
 
     public Stop(String name, String district) {

@@ -36,7 +36,7 @@ public class RatesCacheRestControllerWithMockCache {
     RatesCache ratesCache;
 
     @Test
-    void name() {
+    void givenCache_whenGetMetrics_ReturnCacheMetrics() {
         when(ratesCache.getMetrics()).thenReturn(new RatesCacheMetricsDTO(10,2));
 
         RestAssuredMockMvc.

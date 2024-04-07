@@ -19,15 +19,19 @@ public class Reservation {
     private UUID id;
 
     @ManyToOne
+    @JoinColumn(name = "trip_id")
     private Trip trip;
 
     @NotNull
+    @Column(name = "seat_number", nullable = false)
     private int seatNumber;
 
     @NotNull
+    @Column(name = "client_name", nullable = false)
     private String clientName;
 
     @NotNull
+    @Column(name = "client_address", nullable = false)
     private String clientAddress;
 
     public Reservation(Trip trip, int seatNumber, String clientName, String clientAddress) {

@@ -17,8 +17,13 @@ public class Route {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany
+    @ManyToMany
     @OrderColumn(name = "legs_index")
+    @JoinTable(
+            name = "route_legs",
+            joinColumns = @JoinColumn(name = "route_id"),
+            inverseJoinColumns = @JoinColumn(name = "leg_id")
+    )
     private List<Leg> legs;
 
     public Route(List<Leg> legs) {

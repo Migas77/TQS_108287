@@ -19,13 +19,16 @@ public class Leg {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "origin_stop_id")
     private Stop originStop;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "destination_stop_id")
     private Stop destinationStop;
 
     @NotNull
+    @Column(name = "leg_time")
     private LocalTime legTime;
 
     public Leg(Stop originStop, Stop destinationStop, LocalTime legTime) {
