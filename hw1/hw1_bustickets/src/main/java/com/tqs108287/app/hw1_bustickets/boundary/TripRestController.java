@@ -1,7 +1,8 @@
 package com.tqs108287.app.hw1_bustickets.boundary;
 
-import com.tqs108287.app.hw1_bustickets.entities.Stop;
+import com.tqs108287.app.hw1_bustickets.dto.TripDetailsDTO;
 import com.tqs108287.app.hw1_bustickets.entities.Trip;
+import com.tqs108287.app.hw1_bustickets.service.IRatesService;
 import com.tqs108287.app.hw1_bustickets.service.IStopService;
 import com.tqs108287.app.hw1_bustickets.service.ITripService;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,11 +28,13 @@ public class TripRestController {
 
     private final ITripService tripService;
     private final IStopService stopService;
+    private final IRatesService ratesService;
 
     @GetMapping
-    public ResponseEntity<List<Trip>> searchTrips(
+    public ResponseEntity<List<TripDetailsDTO>> searchTrips(
             @RequestParam Long originId,
             @RequestParam Long destinationId,
+            @RequestParam(defaultValue = "EUR") String locale,
             @RequestParam(name = "departure_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> departureDateOpt
     ){
         LocalDate departureDate = departureDateOpt.orElseGet(LocalDate::now);
@@ -40,7 +42,11 @@ public class TripRestController {
         if (stopService.getStopById(originId).isEmpty() || stopService.getStopById(destinationId).isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        return ResponseEntity.ok(tripService.getAllTripsOnDate(originId, destinationId, departureDate));
+        List<TripDetailsDTO> trips = tripService.getAllTripsDetailsOnDate(originId, destinationId, departureDate);
+
+        logger.info("Here ");
+
+        return ResponseEntity.ok(trips);
     }
 
     @GetMapping("{id}")

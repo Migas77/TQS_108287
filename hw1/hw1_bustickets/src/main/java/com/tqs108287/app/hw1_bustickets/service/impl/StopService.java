@@ -18,7 +18,7 @@ public class StopService implements IStopService {
 
     @Override
     public List<Stop> getAllStops() {
-        return List.of();
+        return stopRepository.findAll();
     }
 
     @Override

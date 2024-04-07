@@ -21,8 +21,8 @@ public class Route {
     @OrderColumn(name = "legs_index")
     @JoinTable(
             name = "route_legs",
-            joinColumns = @JoinColumn(name = "route_id"),
-            inverseJoinColumns = @JoinColumn(name = "leg_id")
+            joinColumns = @JoinColumn(name = "route_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "leg_id", nullable = false)
     )
     private List<Leg> legs;
 

@@ -20,11 +20,11 @@ public class Leg {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "origin_stop_id")
+    @JoinColumn(name = "origin_stop_id", nullable = false)
     private Stop originStop;
 
     @ManyToOne
-    @JoinColumn(name = "destination_stop_id")
+    @JoinColumn(name = "destination_stop_id", nullable = false)
     private Stop destinationStop;
 
     @NotNull

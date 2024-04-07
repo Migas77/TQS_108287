@@ -1,7 +1,9 @@
 package com.tqs108287.app.hw1_bustickets.ControllerWithMockServiceTest;
 
 import com.tqs108287.app.hw1_bustickets.boundary.TripRestController;
+import com.tqs108287.app.hw1_bustickets.dto.TripDetailsDTO;
 import com.tqs108287.app.hw1_bustickets.entities.*;
+import com.tqs108287.app.hw1_bustickets.service.IRatesService;
 import com.tqs108287.app.hw1_bustickets.service.IStopService;
 import com.tqs108287.app.hw1_bustickets.service.ITripService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -19,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
@@ -39,12 +42,21 @@ public class TripControllerWithMockServiceTest {
     @MockBean
     private IStopService stopService;
 
+    @MockBean
+    private IRatesService ratesService;
+
     Trip trip_fromLisboa_toPorto;
     Trip trip_fromLisboa_toBraga;
     Trip trip_fromLisboa_toAveiro;
     Trip trip_fromCoimbra_toPorto;
     Trip trip_fromAveiro_toPorto;
     Trip trip_fromAveiro_toPorto_today;
+    TripDetailsDTO tripDetails_fromLisboa_toPorto;
+    TripDetailsDTO tripDetails_fromLisboa_toBraga;
+    TripDetailsDTO tripDetails_fromLisboa_toAveiro;
+    TripDetailsDTO tripDetails_fromCoimbra_toPorto;
+    TripDetailsDTO tripDetails_fromAveiro_toPorto;
+    TripDetailsDTO tripDetails_fromAveiro_toPorto_today;
 
     // TODO CHANGE BeforeEach later
     @BeforeEach
@@ -71,12 +83,18 @@ public class TripControllerWithMockServiceTest {
         Route route_fromLisboa_toAveiro = new Route(3L, List.of(leg_fromLisboa_toAveiro));
         Route route_fromCoimbra_toPorto = new Route(4L, List.of(leg_fromCoimbra_toPorto));
         Route route_fromAveiro_toPorto = new Route(5L, List.of(leg_fromAveiro_toPorto));
-        trip_fromLisboa_toPorto = new Trip(1L, route_fromLisboa_toPorto, 50, 25f, LocalDateTime.of(2024, 6, 2, 10, 15));
-        trip_fromLisboa_toBraga = new Trip(2L, route_fromLisboa_toBraga, 47, 35f, LocalDateTime.of(2024, 6, 2, 11, 15));
-        trip_fromLisboa_toAveiro = new Trip(3L, route_fromLisboa_toAveiro, 50, 20f, LocalDateTime.of(2024, 6, 3, 10, 15));
-        trip_fromCoimbra_toPorto = new Trip(4L, route_fromCoimbra_toPorto, 30, 22.5f, LocalDateTime.of(2024, 6, 2, 11, 30));
-        trip_fromAveiro_toPorto = new Trip(5L, route_fromAveiro_toPorto, 50, 20f, LocalDateTime.of(2024, 6, 4, 6, 15));
-        trip_fromAveiro_toPorto_today = new Trip(6L, route_fromAveiro_toPorto, 50, 20f, LocalDateTime.now());
+        trip_fromLisboa_toPorto = new Trip(1L, route_fromLisboa_toPorto, Set.of(), 50, 25f, LocalDateTime.of(2024, 6, 2, 10, 15));
+        trip_fromLisboa_toBraga = new Trip(2L, route_fromLisboa_toBraga, Set.of(), 47, 35f, LocalDateTime.of(2024, 6, 2, 11, 15));
+        trip_fromLisboa_toAveiro = new Trip(3L, route_fromLisboa_toAveiro, Set.of(), 50, 20f, LocalDateTime.of(2024, 6, 3, 10, 15));
+        trip_fromCoimbra_toPorto = new Trip(4L, route_fromCoimbra_toPorto, Set.of(), 30, 22.5f, LocalDateTime.of(2024, 6, 2, 11, 30));
+        trip_fromAveiro_toPorto = new Trip(5L, route_fromAveiro_toPorto, Set.of(), 50, 20f, LocalDateTime.of(2024, 6, 4, 6, 15));
+        trip_fromAveiro_toPorto_today = new Trip(6L, route_fromAveiro_toPorto, Set.of(), 50, 20f, LocalDateTime.now());
+        tripDetails_fromLisboa_toPorto = TripDetailsDTO.fromTripEntity(trip_fromLisboa_toPorto);
+        tripDetails_fromLisboa_toBraga = TripDetailsDTO.fromTripEntity(trip_fromLisboa_toBraga);
+        tripDetails_fromLisboa_toAveiro = TripDetailsDTO.fromTripEntity(trip_fromLisboa_toAveiro);
+        tripDetails_fromCoimbra_toPorto = TripDetailsDTO.fromTripEntity(trip_fromCoimbra_toPorto);
+        tripDetails_fromAveiro_toPorto = TripDetailsDTO.fromTripEntity(trip_fromAveiro_toPorto);
+        tripDetails_fromAveiro_toPorto_today = TripDetailsDTO.fromTripEntity(trip_fromAveiro_toPorto_today);
     }
 
     @Test
@@ -92,7 +110,7 @@ public class TripControllerWithMockServiceTest {
                         body(is(Matchers.emptyOrNullString()));
 
         verify(stopService, times(0)).getStopById(anyLong());
-        verify(tripService, times(0)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(tripService, times(0)).getAllTripsDetailsOnDate(anyLong(), anyLong(), any(LocalDate.class));
     }
 
     @Test
@@ -108,7 +126,7 @@ public class TripControllerWithMockServiceTest {
                         body(is(Matchers.emptyOrNullString()));
 
         verify(stopService, times(0)).getStopById(anyLong());
-        verify(tripService, times(0)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(tripService, times(0)).getAllTripsDetailsOnDate(anyLong(), anyLong(), any(LocalDate.class));
     }
 
     @Test
@@ -128,14 +146,14 @@ public class TripControllerWithMockServiceTest {
 
         // it calls stopService 1 time instead of 2 because of java "short-circuiting"
         verify(stopService, times(1)).getStopById(anyLong());
-        verify(tripService, times(0)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(tripService, times(0)).getAllTripsDetailsOnDate(anyLong(), anyLong(), any(LocalDate.class));
     }
 
     @Test
-    void givenManyTrips_whenSearchFromOriginToDestValidWithoutDate_thenReturnList() {
+    void givenManyTrips_whenSearchFromOriginToDestValidWithoutDate_thenReturnListTripDetails() {
         when(stopService.getStopById(anyLong())).thenReturn(Optional.of(new Stop())); // not empty optional
-        when(tripService.getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
-                .thenReturn(List.of(trip_fromAveiro_toPorto_today));
+        when(tripService.getAllTripsDetailsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
+                .thenReturn(List.of(tripDetails_fromAveiro_toPorto_today));
 
         RestAssuredMockMvc.
         given().
@@ -150,14 +168,14 @@ public class TripControllerWithMockServiceTest {
                 body("id[0]", is(trip_fromAveiro_toPorto_today.getId().intValue()));
 
         verify(stopService, times(2)).getStopById(anyLong());
-        verify(tripService, times(1)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(tripService, times(1)).getAllTripsDetailsOnDate(anyLong(), anyLong(), any(LocalDate.class));
     }
 
     @Test
     void givenManyTrips_whenSearchFromOriginToDestValidWithDate_thenReturnList() {
         when(stopService.getStopById(anyLong())).thenReturn(Optional.of(new Stop())); // not empty optional
-        when(tripService.getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
-                .thenReturn(List.of(trip_fromLisboa_toPorto, trip_fromLisboa_toBraga, trip_fromCoimbra_toPorto));
+        when(tripService.getAllTripsDetailsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
+                .thenReturn(List.of(tripDetails_fromLisboa_toPorto, tripDetails_fromLisboa_toBraga, tripDetails_fromCoimbra_toPorto));
 
         RestAssuredMockMvc.
                 given().
@@ -173,7 +191,7 @@ public class TripControllerWithMockServiceTest {
                         body("id", Matchers.containsInAnyOrder(trip_fromLisboa_toPorto.getId().intValue(), trip_fromLisboa_toBraga.getId().intValue(), trip_fromCoimbra_toPorto.getId().intValue()));
 
         verify(stopService, times(2)).getStopById(anyLong());
-        verify(tripService, times(1)).getAllTripsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(tripService, times(1)).getAllTripsDetailsOnDate(anyLong(), anyLong(), any(LocalDate.class));
     }
 
     @Test

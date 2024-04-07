@@ -19,7 +19,7 @@ public class Reservation {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "trip_id")
+    @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
 
     @NotNull

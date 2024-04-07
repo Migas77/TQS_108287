@@ -31,7 +31,7 @@ public class ReservationRestController {
         Optional<Trip> tripOpt = tripService.getTripById(reservationDTO.getTripId());
         if (tripOpt.isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return reservationService.makeReservation(tripOpt.get()).map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>(HttpStatus.CONFLICT));
+        return reservationService.makeReservation(reservationDTO).map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>(HttpStatus.CONFLICT));
     }
 
     @GetMapping("{id}")
