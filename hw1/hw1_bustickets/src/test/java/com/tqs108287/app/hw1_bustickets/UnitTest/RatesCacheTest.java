@@ -12,14 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class RatesCacheTest {
+class RatesCacheTest {
 
-    RatesCache ratesCache = new RatesCache();
     static final Logger logger = getLogger(lookup().lookupClass());
+    RatesCache ratesCache;
 
     @BeforeEach
     void setup(){
-        ratesCache.reset();
+        ratesCache = new RatesCache();
     }
 
     @Test
@@ -31,7 +31,14 @@ public class RatesCacheTest {
     }
 
     @Test
-    void testGetAfterTttl(){
+    void testGetNoPut() {
+        assertNull(ratesCache.get("USD"));
+        assertEquals(0, ratesCache.getMetrics().getCacheHits());
+        assertEquals(1, ratesCache.getMetrics().getCacheMisses());
+    }
+
+    @Test
+    void testGetAfterTtl(){
         ratesCache.setTtl(1);
         ratesCache.put("ALL", 15f);
 
