@@ -22,22 +22,28 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class ReservationRestController {
 
     static final Logger logger = getLogger(lookup().lookupClass());
-
     private final ITripService tripService;
     private final IReservationService reservationService;
 
     @PostMapping
-    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationDTO reservationDTO) throws Exception{
+    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationDTO reservationDTO){
+        logger.info("createReservation; arguments={}", reservationDTO);
         Optional<Trip> tripOpt = tripService.getTripById(reservationDTO.getTripId());
-        if (tripOpt.isEmpty())
+        if (tripOpt.isEmpty()){
+            logger.info("Trip with id {} not found", reservationDTO.getTripId());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return reservationService.makeReservation(reservationDTO).map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>(HttpStatus.CONFLICT));
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Reservation> getReservationDetailsById(@PathVariable UUID id){
+        logger.info("getReservationDetailsById; arguments: id={}", id);
         Optional<Reservation> reservationOpt = reservationService.getReservationById(id);
-        return reservationOpt.map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return reservationOpt.map(ResponseEntity::ok).orElseGet(() -> {
+            logger.info("Reservation with uuid {} not found", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        });
     }
 
 }

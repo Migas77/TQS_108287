@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -23,7 +25,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -41,9 +45,6 @@ public class TripControllerWithMockServiceTest {
 
     @MockBean
     private IStopService stopService;
-
-    @MockBean
-    private IRatesService ratesService;
 
     Trip trip_fromLisboa_toPorto;
     Trip trip_fromLisboa_toBraga;
@@ -90,15 +91,21 @@ public class TripControllerWithMockServiceTest {
         trip_fromAveiro_toPorto = new Trip(5L, route_fromAveiro_toPorto, Set.of(), 50, 20f, LocalDateTime.of(2024, 6, 4, 6, 15));
         trip_fromAveiro_toPorto_today = new Trip(6L, route_fromAveiro_toPorto, Set.of(), 50, 20f, LocalDateTime.now());
         tripDetails_fromLisboa_toPorto = TripDetailsDTO.fromTripEntity(trip_fromLisboa_toPorto);
+        tripDetails_fromLisboa_toPorto.setCurrency("USD");
+        tripDetails_fromLisboa_toPorto.setPrice(tripDetails_fromLisboa_toPorto.getPrice()*1.1f);
         tripDetails_fromLisboa_toBraga = TripDetailsDTO.fromTripEntity(trip_fromLisboa_toBraga);
+        tripDetails_fromLisboa_toBraga.setCurrency("USD");
+        tripDetails_fromLisboa_toBraga.setPrice(tripDetails_fromLisboa_toBraga.getPrice()*1.1f);
         tripDetails_fromLisboa_toAveiro = TripDetailsDTO.fromTripEntity(trip_fromLisboa_toAveiro);
         tripDetails_fromCoimbra_toPorto = TripDetailsDTO.fromTripEntity(trip_fromCoimbra_toPorto);
+        tripDetails_fromCoimbra_toPorto.setCurrency("USD");
+        tripDetails_fromCoimbra_toPorto.setPrice(tripDetails_fromCoimbra_toPorto.getPrice()*1.1f);
         tripDetails_fromAveiro_toPorto = TripDetailsDTO.fromTripEntity(trip_fromAveiro_toPorto);
         tripDetails_fromAveiro_toPorto_today = TripDetailsDTO.fromTripEntity(trip_fromAveiro_toPorto_today);
     }
 
     @Test
-    void givenManyTrips_WhenSearchFromOriginOnly_thenReturnStatus400() {
+    void whenSearchFromOriginOnly_thenReturnStatus400() {
         RestAssuredMockMvc.
                 given().
                         mockMvc(mockMvc).
@@ -114,7 +121,7 @@ public class TripControllerWithMockServiceTest {
     }
 
     @Test
-    void givenManyTrips_WhenSearchToDestOnly_thenReturnStatus400() {
+    void whenSearchToDestOnly_thenReturnStatus400() {
         RestAssuredMockMvc.
                 given().
                         mockMvc(mockMvc).
@@ -130,10 +137,10 @@ public class TripControllerWithMockServiceTest {
     }
 
     @Test
-    void givenManyTrips_whenSearchFromOriginToDestInvalid_thenReturnStatus404() {
+    void whenSearchFromOriginToDestInvalid_thenReturnStatus404WithStopNotFoundMessage() {
         when(stopService.getStopById(anyLong())).thenReturn(Optional.empty());
 
-        RestAssuredMockMvc.
+        String statusLine = RestAssuredMockMvc.
                 given().
                         mockMvc(mockMvc).
                         param("originId", "13213221").
@@ -142,15 +149,43 @@ public class TripControllerWithMockServiceTest {
                         get("api/trips").
                 then().
                         statusCode(HttpStatus.SC_NOT_FOUND).
-                        body(is(Matchers.emptyOrNullString()));
+                        body(is(Matchers.emptyOrNullString()))
+                        .extract().statusLine();
 
+
+        assertEquals("404 Stop 13213221 Not Found", statusLine);
         // it calls stopService 1 time instead of 2 because of java "short-circuiting"
         verify(stopService, times(1)).getStopById(anyLong());
         verify(tripService, times(0)).getAllTripsDetailsOnDate(anyLong(), anyLong(), anyString(), any(LocalDate.class));
     }
 
     @Test
-    void givenManyTrips_whenSearchFromOriginToDestValidWithoutDate_thenReturnListTripDetails() {
+    void whenSearchFromOriginToDestWithInvalidCurrency_thenReturnStatus404WithStopNotFoundMessage() {
+        when(stopService.getStopById(anyLong())).thenThrow(
+                new ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Currency doesntexist Not Found"));
+
+        String statusLine = RestAssuredMockMvc.
+                given().
+                        mockMvc(mockMvc).
+                        param("originId", "13213221").
+                        param("destinationId", "33123212").
+                        param("currency", "doesntexist").
+                when().
+                        get("api/trips").
+                then().
+                        statusCode(HttpStatus.SC_NOT_FOUND).
+                        body(is(Matchers.emptyOrNullString()))
+                        .extract().statusLine();
+
+
+        assertEquals("404 Currency doesntexist Not Found", statusLine);
+        // it calls stopService 1 time instead of 2 because of java "short-circuiting"
+        verify(stopService, times(1)).getStopById(anyLong());
+        verify(tripService, times(0)).getAllTripsDetailsOnDate(anyLong(), anyLong(), anyString(), any(LocalDate.class));
+    }
+
+    @Test
+    void whenSearchFromOriginToDestValidWithoutDateAndCurrency_thenReturnListTripDetails() {
         when(stopService.getStopById(anyLong())).thenReturn(Optional.of(new Stop())); // not empty optional
         when(tripService.getAllTripsDetailsOnDate(anyLong(), anyLong(), anyString(), any(LocalDate.class)))
                 .thenReturn(List.of(tripDetails_fromAveiro_toPorto_today));
@@ -165,17 +200,18 @@ public class TripControllerWithMockServiceTest {
         then().
                 statusCode(HttpStatus.SC_OK).
                 body("size()", is(1)).
-                body("id[0]", is(trip_fromAveiro_toPorto_today.getId().intValue()));
+                body("id[0]", is(trip_fromAveiro_toPorto_today.getId().intValue()))
+                .body("currency", Matchers.contains("EUR"));
 
         verify(stopService, times(2)).getStopById(anyLong());
         verify(tripService, times(1)).getAllTripsDetailsOnDate(anyLong(), anyLong(), anyString(), any(LocalDate.class));
     }
 
     @Test
-    void givenManyTrips_whenSearchFromOriginToDestValidWithDate_thenReturnList() {
+    void whenSearchFromOriginToDestValidWithDateAndUSD_thenReturnList() {
         when(stopService.getStopById(anyLong())).thenReturn(Optional.of(new Stop())); // not empty optional
         when(tripService.getAllTripsDetailsOnDate(anyLong(), anyLong(), anyString(), any(LocalDate.class)))
-                .thenReturn(List.of(tripDetails_fromLisboa_toPorto, tripDetails_fromLisboa_toBraga, tripDetails_fromCoimbra_toPorto));
+                .thenReturn(List.of(tripDetails_fromLisboa_toPorto, tripDetails_fromLisboa_toBraga));
 
         RestAssuredMockMvc.
                 given().
@@ -183,12 +219,14 @@ public class TripControllerWithMockServiceTest {
                         param("originId", "1").
                         param("destinationId", "3").
                         param("departureDate", "2024-06-02").
+                        param("currency", "USD").
                 when().
                         get("api/trips").
                 then().
                         statusCode(HttpStatus.SC_OK).
-                        body("size()", is(3)).
-                        body("id", Matchers.containsInAnyOrder(trip_fromLisboa_toPorto.getId().intValue(), trip_fromLisboa_toBraga.getId().intValue(), trip_fromCoimbra_toPorto.getId().intValue()));
+                        body("size()", is(2)).
+                        body("id", Matchers.containsInAnyOrder(trip_fromLisboa_toPorto.getId().intValue(), trip_fromLisboa_toBraga.getId().intValue()))
+                        .body("currency", Matchers.containsInAnyOrder("USD", "USD"));
 
         verify(stopService, times(2)).getStopById(anyLong());
         verify(tripService, times(1)).getAllTripsDetailsOnDate(anyLong(), anyLong(), anyString(), any(LocalDate.class));
@@ -212,14 +250,14 @@ public class TripControllerWithMockServiceTest {
     }
 
     @Test
-    void whenGetTripWithInValidId_thenReturnStatus404() {
+    void whenGetTripWithInvalidId_thenReturnStatus404() {
         when(tripService.getTripById(anyLong())).thenReturn(Optional.empty());
 
         RestAssuredMockMvc.
                 given().
                         mockMvc(mockMvc).
                 when().
-                        get("api/trips/{id}", "1").
+                        get("api/trips/{id}", "113231221312").
                 then().
                         statusCode(HttpStatus.SC_NOT_FOUND).
                         body(is(Matchers.emptyOrNullString()));
@@ -227,7 +265,4 @@ public class TripControllerWithMockServiceTest {
         verify(stopService, times(0)).getStopById(anyLong());
         verify(tripService, times(1)).getTripById(anyLong());
     }
-
-    // TODO trip controller test parameters without currency (check default)
-    // TODO test currency
 }

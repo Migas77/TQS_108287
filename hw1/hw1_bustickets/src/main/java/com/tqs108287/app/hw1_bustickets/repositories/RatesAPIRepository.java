@@ -21,17 +21,22 @@ public class RatesAPIRepository {
     private final RestTemplate restTemplate;
 
     public Optional<RatesDTO> getRatesFromEurToCurrency(String currency){
+        logger.info("getRatesFromEurToCurrency(); arguments: currency={}", currency);
+
+        String url = BASE_URL + "latest?from=EUR&to=" + currency;
         try {
             ResponseEntity<RatesAPIResponseDTO> response =
-                    restTemplate.getForEntity(BASE_URL + "latest?from=EUR&to=" + currency, RatesAPIResponseDTO.class);
+                    restTemplate.getForEntity(url, RatesAPIResponseDTO.class);
 
             RatesAPIResponseDTO ratesAPIResponseDTO = response.getBody();
             if (ratesAPIResponseDTO == null) {
+                logger.info("ratesAPIResponse body is null");
                 return Optional.empty();
             }
 
             return Optional.of(new RatesDTO(currency, ratesAPIResponseDTO.getRates().get(currency)));
         }catch (RestClientException e){
+            logger.error("Something went wrong fetching Rates from {}. Error Message: {}", url, e.getMessage());
             return Optional.empty();
         }
     }

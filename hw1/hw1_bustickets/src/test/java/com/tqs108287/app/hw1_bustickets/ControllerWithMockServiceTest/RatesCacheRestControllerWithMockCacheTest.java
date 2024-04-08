@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @WebMvcTest(RatesCacheRestController.class)
-public class RatesCacheRestControllerWithMockCacheTest {
+class RatesCacheRestControllerWithMockCacheTest {
     static final Logger logger = getLogger(lookup().lookupClass());
 
     @Autowired

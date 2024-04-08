@@ -18,7 +18,7 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
             "JOIN rota.legs origin " +
             "JOIN rota.legs destination " +
             "WHERE origin.originStop.id = :origin_id AND destination.destinationStop.id = :destination_id " +
-            "AND DATE(t.departureTime) = :departure_date " +
+            "AND CAST(t.departureTime AS DATE) = :departure_date " +
             "AND INDEX(origin) <= INDEX(destination) ")
     List<Trip> findTripsBetweenStopsOnDate(@Param("origin_id") long originId,
                                            @Param("destination_id") long destinationId,

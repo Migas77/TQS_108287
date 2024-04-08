@@ -23,23 +23,30 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class TripService implements ITripService {
 
     static final Logger logger = getLogger(lookup().lookupClass());
-
     private TripRepository tripRepository;
     private RatesService ratesService;
 
 
     @Override
     public List<TripDetailsDTO> getAllTripsDetailsOnDate(long originId, long destinationId, String currency, LocalDate date) {
+        logger.info("getAllTripsDetailsOnDate(); arguments: originId={}, destinationId={}, currency={}, date={}",
+                originId, destinationId, currency, date);
+
         List<Trip> foundTrips = tripRepository.findTripsBetweenStopsOnDate(originId, destinationId, date);
         if (foundTrips.isEmpty()){
-            logger.info("didn't found any trips");
+            logger.info("Trips not found between stops {} and {}", originId, destinationId);
             return List.of();
         }
         if (currency.equals("EUR")){
+            logger.info("Currency is EUR - no need to convert");
             return foundTrips.stream().map(TripDetailsDTO::fromTripEntity).toList();
         }
         RatesDTO ratesDTO = ratesService.getRatesFromEurTo(currency)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Currency Not Found"));
+                .orElseThrow(() -> {
+                    String errorMessage = String.format("Currency %s Not Found", currency);
+                    logger.info(errorMessage);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, errorMessage);
+                });
         return foundTrips.stream()
                 .map(trip -> {
                     TripDetailsDTO tripDetailsDTO = TripDetailsDTO.fromTripEntity(trip);
@@ -51,16 +58,19 @@ public class TripService implements ITripService {
 
     @Override
     public Optional<Trip> getTripById(long tripId) {
+        logger.info("getTripById(); arguments: tripId={}", tripId);
         return tripRepository.findById(tripId);
     }
 
     @Override
     public Optional<TripDetailsDTO> getTripDetailsById(long tripId) {
+        logger.info("getTripDetailsById(); arguments: tripId={}", tripId);
         return tripRepository.findById(tripId).map(TripDetailsDTO::fromTripEntity);
     }
 
     @Override
     public long getNumberReservationsByTrip(Trip trip) {
+        logger.info("getNumberReservationsByTrip(); arguments: Trip object with id {}", trip.getId());
         return tripRepository.countReservationsByTrip(trip);
     }
 

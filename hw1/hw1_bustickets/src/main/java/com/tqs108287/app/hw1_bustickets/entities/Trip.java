@@ -14,6 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name = "trip")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Trip {
@@ -42,8 +43,7 @@ public class Trip {
     @Column(name = "departure_time", nullable = false)
     private LocalDateTime departureTime;
 
-    public Trip(Long id, Route route, Set<Reservation> reservations, int numberOfSeats, float priceEuros, LocalDateTime departureTime) {
-        this.id = id;
+    public Trip(Route route, Set<Reservation> reservations, int numberOfSeats, float priceEuros, LocalDateTime departureTime) {
         this.route = route;
         this.reservations = reservations;
         this.numberOfSeats = numberOfSeats;

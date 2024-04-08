@@ -68,4 +68,20 @@ public class StopControllerWithMockServiceTest {
 
         verify(service, times(1)).getAllStops();
     }
+
+    @Test
+    void givenNoStops_whenSearchAll_returnEmptyList() {
+        when(service.getAllStops()).thenReturn(List.of());
+
+        RestAssuredMockMvc.
+                given().
+                        mockMvc(mockMvc).
+                when().
+                        get("api/stops").
+                then().
+                        statusCode(HttpStatus.SC_OK).
+                        body("size()", is(0));
+
+        verify(service, times(1)).getAllStops();
+    }
 }
