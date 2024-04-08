@@ -40,7 +40,8 @@ VALUES
     (2, 47, 50, '2024-06-02T11:15:00'),
     (3, 50, 20, '2024-06-03T10:15:00'),
     (4, 30, 22.5, '2024-06-02T11:30:00'),
-    (5, 50, 20, '2024-06-04T06:15:00');
+    (5, 50, 20, '2024-06-04T06:15:00'),
+    (5, 50, 20, CONCAT(CURRENT_DATE(), 'T07:00:00'));
 
 INSERT INTO reservation (id, trip_id, seat_number, client_name, client_address)
 VALUES

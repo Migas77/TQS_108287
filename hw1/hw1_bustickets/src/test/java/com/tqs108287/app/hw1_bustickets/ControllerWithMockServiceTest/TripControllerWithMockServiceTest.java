@@ -160,15 +160,15 @@ public class TripControllerWithMockServiceTest {
     }
 
     @Test
-    void whenSearchFromOriginToDestWithInvalidCurrency_thenReturnStatus404WithStopNotFoundMessage() {
+    void whenSearchFromOriginToDestWithInvalidCurrency_thenReturnStatus404WithCurrencyNotFoundMessage() {
         when(stopService.getStopById(anyLong())).thenThrow(
                 new ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Currency doesntexist Not Found"));
 
         String statusLine = RestAssuredMockMvc.
                 given().
                         mockMvc(mockMvc).
-                        param("originId", "13213221").
-                        param("destinationId", "33123212").
+                        param("originId", "1").
+                        param("destinationId", "3").
                         param("currency", "doesntexist").
                 when().
                         get("api/trips").
@@ -179,7 +179,7 @@ public class TripControllerWithMockServiceTest {
 
 
         assertEquals("404 Currency doesntexist Not Found", statusLine);
-        // it calls stopService 1 time instead of 2 because of java "short-circuiting"
+        // it calls stopService 1 time because it is true on the first if
         verify(stopService, times(1)).getStopById(anyLong());
         verify(tripService, times(0)).getAllTripsDetailsOnDate(anyLong(), anyLong(), anyString(), any(LocalDate.class));
     }
@@ -218,7 +218,7 @@ public class TripControllerWithMockServiceTest {
                         mockMvc(mockMvc).
                         param("originId", "1").
                         param("destinationId", "3").
-                        param("departureDate", "2024-06-02").
+                        param("departure_date", "2024-06-02").
                         param("currency", "USD").
                 when().
                         get("api/trips").
@@ -234,7 +234,7 @@ public class TripControllerWithMockServiceTest {
 
     @Test
     void whenGetTripWithValidId_thenReturnTripDetails() {
-        when(tripService.getTripById(anyLong())).thenReturn(Optional.of(trip_fromLisboa_toPorto));
+        when(tripService.getTripDetailsById(anyLong())).thenReturn(Optional.of(tripDetails_fromLisboa_toPorto));
 
         RestAssuredMockMvc.
                 given().
@@ -246,12 +246,12 @@ public class TripControllerWithMockServiceTest {
                         body("id", is(1));
 
         verify(stopService, times(0)).getStopById(anyLong());
-        verify(tripService, times(1)).getTripById(anyLong());
+        verify(tripService, times(1)).getTripDetailsById(anyLong());
     }
 
     @Test
     void whenGetTripWithInvalidId_thenReturnStatus404() {
-        when(tripService.getTripById(anyLong())).thenReturn(Optional.empty());
+        when(tripService.getTripDetailsById(anyLong())).thenReturn(Optional.empty());
 
         RestAssuredMockMvc.
                 given().
@@ -263,6 +263,6 @@ public class TripControllerWithMockServiceTest {
                         body(is(Matchers.emptyOrNullString()));
 
         verify(stopService, times(0)).getStopById(anyLong());
-        verify(tripService, times(1)).getTripById(anyLong());
+        verify(tripService, times(1)).getTripDetailsById(anyLong());
     }
 }

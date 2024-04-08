@@ -60,10 +60,10 @@ public class TripRestController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Trip> getTripDetailsById(@PathVariable Long id){
+    public ResponseEntity<TripDetailsDTO> getTripDetailsById(@PathVariable Long id){
         logger.info("GET /api/trips/{}", id);
 
-        Optional<Trip> tripOpt = tripService.getTripById(id);
+        Optional<TripDetailsDTO> tripOpt = tripService.getTripDetailsById(id);
         return tripOpt.map(ResponseEntity::ok).orElseGet(() -> {
             logger.info("Reservation with id {} not found.", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
