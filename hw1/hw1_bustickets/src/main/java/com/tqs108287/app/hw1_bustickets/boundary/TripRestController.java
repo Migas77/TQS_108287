@@ -34,17 +34,17 @@ public class TripRestController {
     public ResponseEntity<List<TripDetailsDTO>> searchTrips(
             @RequestParam Long originId,
             @RequestParam Long destinationId,
-            @RequestParam(defaultValue = "EUR") String locale,
+            @RequestParam(defaultValue = "EUR") String currency,
             @RequestParam(name = "departure_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> departureDateOpt
     ){
         LocalDate departureDate = departureDateOpt.orElseGet(LocalDate::now);
 
+        logger.info(currency);
+
         if (stopService.getStopById(originId).isEmpty() || stopService.getStopById(destinationId).isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        List<TripDetailsDTO> trips = tripService.getAllTripsDetailsOnDate(originId, destinationId, departureDate);
-
-        logger.info("Here ");
+        List<TripDetailsDTO> trips = tripService.getAllTripsDetailsOnDate(originId, destinationId, currency, departureDate);
 
         return ResponseEntity.ok(trips);
     }

@@ -110,7 +110,7 @@ public class TripControllerWithMockServiceTest {
                         body(is(Matchers.emptyOrNullString()));
 
         verify(stopService, times(0)).getStopById(anyLong());
-        verify(tripService, times(0)).getAllTripsDetailsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(tripService, times(0)).getAllTripsDetailsOnDate(anyLong(), anyLong(), anyString(), any(LocalDate.class));
     }
 
     @Test
@@ -126,7 +126,7 @@ public class TripControllerWithMockServiceTest {
                         body(is(Matchers.emptyOrNullString()));
 
         verify(stopService, times(0)).getStopById(anyLong());
-        verify(tripService, times(0)).getAllTripsDetailsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(tripService, times(0)).getAllTripsDetailsOnDate(anyLong(), anyLong(), anyString(), any(LocalDate.class));
     }
 
     @Test
@@ -146,13 +146,13 @@ public class TripControllerWithMockServiceTest {
 
         // it calls stopService 1 time instead of 2 because of java "short-circuiting"
         verify(stopService, times(1)).getStopById(anyLong());
-        verify(tripService, times(0)).getAllTripsDetailsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(tripService, times(0)).getAllTripsDetailsOnDate(anyLong(), anyLong(), anyString(), any(LocalDate.class));
     }
 
     @Test
     void givenManyTrips_whenSearchFromOriginToDestValidWithoutDate_thenReturnListTripDetails() {
         when(stopService.getStopById(anyLong())).thenReturn(Optional.of(new Stop())); // not empty optional
-        when(tripService.getAllTripsDetailsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
+        when(tripService.getAllTripsDetailsOnDate(anyLong(), anyLong(), anyString(), any(LocalDate.class)))
                 .thenReturn(List.of(tripDetails_fromAveiro_toPorto_today));
 
         RestAssuredMockMvc.
@@ -168,13 +168,13 @@ public class TripControllerWithMockServiceTest {
                 body("id[0]", is(trip_fromAveiro_toPorto_today.getId().intValue()));
 
         verify(stopService, times(2)).getStopById(anyLong());
-        verify(tripService, times(1)).getAllTripsDetailsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(tripService, times(1)).getAllTripsDetailsOnDate(anyLong(), anyLong(), anyString(), any(LocalDate.class));
     }
 
     @Test
     void givenManyTrips_whenSearchFromOriginToDestValidWithDate_thenReturnList() {
         when(stopService.getStopById(anyLong())).thenReturn(Optional.of(new Stop())); // not empty optional
-        when(tripService.getAllTripsDetailsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
+        when(tripService.getAllTripsDetailsOnDate(anyLong(), anyLong(), anyString(), any(LocalDate.class)))
                 .thenReturn(List.of(tripDetails_fromLisboa_toPorto, tripDetails_fromLisboa_toBraga, tripDetails_fromCoimbra_toPorto));
 
         RestAssuredMockMvc.
@@ -191,7 +191,7 @@ public class TripControllerWithMockServiceTest {
                         body("id", Matchers.containsInAnyOrder(trip_fromLisboa_toPorto.getId().intValue(), trip_fromLisboa_toBraga.getId().intValue(), trip_fromCoimbra_toPorto.getId().intValue()));
 
         verify(stopService, times(2)).getStopById(anyLong());
-        verify(tripService, times(1)).getAllTripsDetailsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(tripService, times(1)).getAllTripsDetailsOnDate(anyLong(), anyLong(), anyString(), any(LocalDate.class));
     }
 
     @Test
@@ -227,4 +227,7 @@ public class TripControllerWithMockServiceTest {
         verify(stopService, times(0)).getStopById(anyLong());
         verify(tripService, times(1)).getTripById(anyLong());
     }
+
+    // TODO trip controller test parameters without currency (check default)
+    // TODO test currency
 }

@@ -1,8 +1,10 @@
 package com.tqs108287.app.hw1_bustickets.ServiceTest;
 
+import com.tqs108287.app.hw1_bustickets.dto.RatesDTO;
 import com.tqs108287.app.hw1_bustickets.dto.TripDetailsDTO;
 import com.tqs108287.app.hw1_bustickets.entities.*;
 import com.tqs108287.app.hw1_bustickets.repositories.TripRepository;
+import com.tqs108287.app.hw1_bustickets.service.impl.RatesService;
 import com.tqs108287.app.hw1_bustickets.service.impl.TripService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -28,6 +31,9 @@ public class TripServiceWithMockRepositoryTest {
 
     @Mock
     private TripRepository tripRepository;
+
+    @Mock
+    private RatesService ratesService;
 
     @InjectMocks
     private TripService tripService;
@@ -104,26 +110,48 @@ public class TripServiceWithMockRepositoryTest {
     }
 
     @Test
-    void givenManyTrips_WhenSearchValidTripsFromOriginToDestInDate_ThenReturnListOfTrips() {
-        when(tripRepository.findTripsBetweenStopsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
-                .thenReturn(List.of(trip_fromLisboa_toPorto, trip_fromLisboa_toBraga));
-
-        List<TripDetailsDTO> trips = tripService.getAllTripsDetailsOnDate(1, 3, LocalDate.of(2024, 6, 2));
-
-        assertThat(trips).hasSize(2).extracting(TripDetailsDTO::getId)
-                .containsExactly(trip_fromLisboa_toPorto.getId(), trip_fromLisboa_toBraga.getId());
-        verify(tripRepository, times(1)).findTripsBetweenStopsOnDate(anyLong(), anyLong(), any(LocalDate.class));
-    }
-
-    @Test
-    void givenManyTrips_WhenSearchInvalidTripsFromOriginToDestInDate_ThenReturnListOfTrips() {
+    void givenManyTrips_WhenSearchInvalidTripsFromOriginToDestInDate_ThenReturnEmptyList() {
         when(tripRepository.findTripsBetweenStopsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
                 .thenReturn(List.of());
 
-        List<TripDetailsDTO> trips = tripService.getAllTripsDetailsOnDate(1, 3, LocalDate.of(2024, 6, 2));
+        List<TripDetailsDTO> trips = tripService.getAllTripsDetailsOnDate(1, 3, "USD", LocalDate.of(2024, 6, 2));
 
         assertThat(trips).isEmpty();
         verify(tripRepository, times(1)).findTripsBetweenStopsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(ratesService, times(0)).getRatesFromEurTo(anyString());
+    }
+
+    @Test
+    void givenManyTrips_WhenSearchValidTripsFromOriginToDestInDateWithEUR_ThenReturnListOfTripsInEUR() {
+        when(tripRepository.findTripsBetweenStopsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
+                .thenReturn(List.of(trip_fromLisboa_toPorto, trip_fromLisboa_toBraga));
+
+        List<TripDetailsDTO> trips = tripService.getAllTripsDetailsOnDate(1, 3, "EUR", LocalDate.of(2024, 6, 2));
+
+        assertThat(trips).hasSize(2).extracting(TripDetailsDTO::getId, TripDetailsDTO::getCurrency, TripDetailsDTO::getPrice)
+                .containsExactly(
+                        tuple(trip_fromLisboa_toPorto.getId(), "EUR", trip_fromLisboa_toPorto.getPriceEuros()),
+                        tuple(trip_fromLisboa_toBraga.getId(), "EUR", trip_fromLisboa_toBraga.getPriceEuros())
+                );
+        verify(tripRepository, times(1)).findTripsBetweenStopsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(ratesService, times(0)).getRatesFromEurTo(anyString());
+    }
+
+    @Test
+    void givenManyTrips_WhenSearchValidTripsFromOriginToDestInDateWithUSD_ThenReturnListOfTripsInUSD() {
+        when(tripRepository.findTripsBetweenStopsOnDate(anyLong(), anyLong(), any(LocalDate.class)))
+                .thenReturn(List.of(trip_fromLisboa_toPorto, trip_fromLisboa_toBraga));
+        when(ratesService.getRatesFromEurTo(anyString())).thenReturn(Optional.of(new RatesDTO("USD", 1.1f)));
+
+        List<TripDetailsDTO> trips = tripService.getAllTripsDetailsOnDate(1, 3, "USD", LocalDate.of(2024, 6, 2));
+
+        assertThat(trips).hasSize(2).extracting(TripDetailsDTO::getId, TripDetailsDTO::getCurrency, TripDetailsDTO::getPrice)
+                .containsExactly(
+                        tuple(trip_fromLisboa_toPorto.getId(), "USD", trip_fromLisboa_toPorto.getPriceEuros()*1.1f),
+                        tuple(trip_fromLisboa_toBraga.getId(), "USD",trip_fromLisboa_toBraga.getPriceEuros()*1.1f)
+                );
+        verify(tripRepository, times(1)).findTripsBetweenStopsOnDate(anyLong(), anyLong(), any(LocalDate.class));
+        verify(ratesService, times(1)).getRatesFromEurTo(anyString());
     }
 
 }

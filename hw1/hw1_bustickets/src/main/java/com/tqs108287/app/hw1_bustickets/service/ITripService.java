@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ITripService {
-    public List<TripDetailsDTO> getAllTripsDetailsOnDate(long originId, long destinationId, LocalDate date);
+    public List<TripDetailsDTO> getAllTripsDetailsOnDate(long originId, long destinationId, String currency, LocalDate date);
 
     public Optional<Trip> getTripById(long tripId);
 
