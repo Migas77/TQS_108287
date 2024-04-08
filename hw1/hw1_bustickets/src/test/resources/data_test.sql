@@ -36,13 +36,14 @@ VALUES
 
 INSERT INTO trip (route_id, number_of_seats, price_euros, departure_time)
 VALUES
-    (1, 50, 25, '2024-06-02T10:15:00'),
-    (2, 47, 50, '2024-06-02T11:15:00'),
-    (3, 50, 20, '2024-06-03T10:15:00'),
+    (1, 2, 25, '2024-06-02T10:15:00'),
+    (2, 1, 50, '2024-06-02T11:15:00'),
+    (3, 4, 20, '2024-06-03T10:15:00'),
     (4, 30, 22.5, '2024-06-02T11:30:00'),
     (5, 50, 20, '2024-06-04T06:15:00'),
     (5, 50, 20, CONCAT(CURRENT_DATE(), 'T07:00:00'));
 
 INSERT INTO reservation (id, trip_id, seat_number, client_name, client_address)
 VALUES
-    (UNHEX('aa0f7252309c11eaa72a0242ac130002'), 1, 1, 'Miguel', 'Rua XPTO')
+    (UNHEX('aa0f7252309c11eaa72a0242ac130002'), 1, 1, 'Miguel', 'Rua XPTO'), -- trip 1 with 1 seat left
+    (UNHEX('aa0f7352309c11eaa72a0242ac130002'), 2, 1, 'Belchior', 'Rua XPTO') -- trip 2 wih 0 seats left

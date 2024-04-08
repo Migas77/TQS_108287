@@ -5,6 +5,7 @@ import com.tqs108287.app.hw1_bustickets.entities.Reservation;
 import com.tqs108287.app.hw1_bustickets.entities.Trip;
 import com.tqs108287.app.hw1_bustickets.repositories.ReservationRepository;
 import com.tqs108287.app.hw1_bustickets.service.IReservationService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @Service
+@AllArgsConstructor
 public class ReservationService implements IReservationService {
 
     static final Logger logger = getLogger(lookup().lookupClass());

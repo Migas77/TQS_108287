@@ -1,13 +1,13 @@
 package com.tqs108287.app.hw1_bustickets.IT;
 
-import com.tqs108287.app.hw1_bustickets.repositories.TripRepository;
+import com.tqs108287.app.hw1_bustickets.dto.ReservationDTO;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -26,7 +26,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @TestPropertySource(locations = "classpath:application-it.properties")
-public class StopControllerIT {
+public class ReservationControllerIT {
 
     static final Logger logger = getLogger(lookup().lookupClass());
 
@@ -54,13 +54,61 @@ public class StopControllerIT {
     }
 
     @Test
-    void givenManyStops_whenSearchAll_returnList() {
+    void givenInvalidTrip_whenMakeReservation_thenReturnStatus404() {
         given().
+                contentType(ContentType.JSON).
+                body(new ReservationDTO(1132312L, 1, "Cliente", "Morada")).
         when().
-                get("api/stops").
+                post("api/reservations").
+        then().
+                statusCode(HttpStatus.SC_NOT_FOUND).
+                body(is(Matchers.emptyOrNullString()));
+    }
+
+    @Test
+    void givenValidFullTrip_whenMakeReservation_thenReturnStatus409() {
+        given().
+                contentType(ContentType.JSON).
+                body(new ReservationDTO(2L, 1, "Cliente", "Morada")).
+        when().
+                post("api/reservations").
+        then().
+                statusCode(HttpStatus.SC_CONFLICT).
+                body(is(Matchers.emptyOrNullString()));
+    }
+
+    @Test
+    void givenValidNotFullTrip_whenMakeReservationOnOccupiedSeat_thenReturnStatus409() {
+        given().
+                contentType(ContentType.JSON).
+                body(new ReservationDTO(1L, 1, "Cliente", "Morada")).
+        when().
+                post("api/reservations").
+        then().
+                statusCode(HttpStatus.SC_CONFLICT).
+                body(is(Matchers.emptyOrNullString()));
+    }
+
+    @Test
+    void givenValidNotFullTrip_whenMakeReservation_thenReturnReservation() {
+        given().
+                contentType(ContentType.JSON).
+                body(new ReservationDTO(3L, 2, "Cliente", "Morada")).
+        when().
+                post("api/reservations").
         then().
                 statusCode(HttpStatus.SC_OK).
-                body("size()", is(5)).
-                body("name", containsInAnyOrder("Lisboa", "Coimbra", "Aveiro", "Porto", "Braga"));
+                body("trip.id", is(3));
+
+        // verify available seat numbers on reserved trip
+        given().
+        when().
+                get("api/trips/3").
+        then().
+                statusCode(HttpStatus.SC_OK).
+                body("availableSeats", not(contains(2))).
+                body("availableSeats", contains(1,3,4));
     }
+
+    // TODO to be continued IT IS NOT OVER
 }

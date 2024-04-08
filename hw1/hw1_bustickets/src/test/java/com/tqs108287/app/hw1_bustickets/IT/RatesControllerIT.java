@@ -48,7 +48,7 @@ public class RatesControllerIT {
     int randomServerPort;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp(){
         RestAssured.port = randomServerPort;
         // data inserted through data_test.sql -> no setup required
     }
