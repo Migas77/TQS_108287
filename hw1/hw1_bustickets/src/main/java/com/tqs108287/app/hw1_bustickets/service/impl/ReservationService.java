@@ -24,38 +24,46 @@ public class ReservationService implements IReservationService {
 
     @Override
     public Optional<Reservation> makeReservation(ReservationDTO reservationDTO) {
+        logger.info("calling make reservation");
+
         Optional<Trip> tripOpt = tripService.getTripById(reservationDTO.getTripId());
         if (tripOpt.isEmpty()){
             logger.info("trip with this id doesn't exist");
             return Optional.empty();
         }
 
+        logger.info("trip with this id does exist");
+
         Trip trip = tripOpt.get();
         int seatNumber = reservationDTO.getSeatNumber();
-
-        logger.info(String.valueOf(trip.getNumberOfSeats()));
-        logger.info(String.valueOf(seatNumber));
-        logger.info(String.valueOf(trip.getReservationsCount()));
 
         if (seatNumberIsNotValid(trip, seatNumber)){
             logger.info("seat number not valid");
             return Optional.empty();
         }
 
+        logger.info("seat number is valid");
+
         if (busIsFull(trip)){
             logger.info("bus is full");
             return Optional.empty();
         }
 
+        logger.info("bus is not full");
+
         Optional<Reservation> reservationSameSeatOpt = reservationRepository.findByTripAndSeatNumber(trip, seatNumber);
+        logger.info(String.valueOf(reservationSameSeatOpt.isPresent()));
         if (reservationSameSeatOpt.isPresent()){
             logger.info("it exists a reservation for this seat");
             return Optional.empty();
         }
 
+        logger.info("creating");
+        Reservation toSave = reservationDTO.toReservationEntity(trip);
+
         logger.info("returning");
 
-        return Optional.of(reservationRepository.save(reservationDTO.toReservationEntity(trip)));
+        return Optional.of(reservationRepository.save(toSave));
     }
 
     @Override
@@ -64,7 +72,7 @@ public class ReservationService implements IReservationService {
     }
 
     private boolean busIsFull(Trip trip){
-        return trip.getReservationsCount() == trip.getNumberOfSeats();
+        return tripService.getNumberReservationsByTrip(trip) == trip.getNumberOfSeats();
     }
 
     private boolean seatNumberIsNotValid(Trip trip, int seatNumber){

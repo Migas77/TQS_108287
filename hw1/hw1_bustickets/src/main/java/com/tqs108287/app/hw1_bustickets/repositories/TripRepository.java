@@ -24,5 +24,7 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
                                            @Param("destination_id") long destinationId,
                                            @Param("departure_date") LocalDate departureDate);
 
+    @Query("SELECT COUNT(r) FROM Reservation r WHERE r.trip = :trip")
+    long countReservationsByTrip(@Param("trip") Trip trip);
 
 }

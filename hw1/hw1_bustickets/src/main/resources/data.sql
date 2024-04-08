@@ -41,3 +41,7 @@ VALUES
     (3, 50, 20, '2024-06-03T10:15:00'),
     (4, 30, 22.5, '2024-06-02T11:30:00'),
     (5, 50, 20, '2024-06-04T06:15:00');
+
+INSERT INTO reservation (id, trip_id, seat_number, client_name, client_address)
+VALUES
+    (UNHEX('aa0f7252309c11eaa72a0242ac130002'), 1, 1, 'Miguel', 'Rua XPTO')

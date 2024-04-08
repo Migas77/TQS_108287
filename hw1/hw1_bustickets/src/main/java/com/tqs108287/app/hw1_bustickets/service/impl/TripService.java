@@ -26,8 +26,6 @@ public class TripService implements ITripService {
 
     @Override
     public List<TripDetailsDTO> getAllTripsDetailsOnDate(long originId, long destinationId, LocalDate date) {
-        logger.warn(String.valueOf(tripRepository.findById(destinationId).get().getReservationsCount()));
-        logger.warn(String.valueOf(tripRepository.findById(destinationId).get().getReservations().size()));
         return tripRepository.findTripsBetweenStopsOnDate(originId, destinationId, date).stream()
                 .map(TripDetailsDTO::fromTripEntity).toList();
     }
@@ -41,4 +39,11 @@ public class TripService implements ITripService {
     public Optional<TripDetailsDTO> getTripDetailsById(long tripId) {
         return tripRepository.findById(tripId).map(TripDetailsDTO::fromTripEntity);
     }
+
+    @Override
+    public long getNumberReservationsByTrip(Trip trip) {
+        return tripRepository.countReservationsByTrip(trip);
+    }
+
+
 }

@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -67,11 +68,12 @@ public class ReservationServiceWithMockRepositoryTest {
 
     @Test
     void givenManyReservations_whenGetReservationByInvalidId_thenReturnEmptyOptional() {
+        when(reservationRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
         Optional<Reservation> tripOpt = reservationService.getReservationById(UUID.fromString("122e4567-e89b-12d3-a456-426614174000"));
 
         assertThat(tripOpt).isEmpty();
-        verify(reservationRepository, times(0)).findById(anyLong());
-        verify(tripService, times(0)).getTripById(anyLong());
+        verify(reservationRepository, times(1)).findById(any(UUID.class));
     }
 
     @Test
@@ -84,67 +86,6 @@ public class ReservationServiceWithMockRepositoryTest {
                 .isNotEmpty()
                 .hasValueSatisfying(reservation -> assertThat(reservation.getId()).isEqualTo(reservation_fromLisboa_toPorto.getId()));
         verify(reservationRepository, times(1)).findById(any(UUID.class));
-        verify(tripService, times(0)).getTripById(anyLong());
-    }
-
-    @Test
-    void givenManyReservations_whenReserveInvalidSeat_thenReturnEmptyOptional() {
-        ReservationDTO reservationDTO_fromLisboa_toPorto = new ReservationDTO(trip_fromLisboa_toPorto_1.getId(),
-                10, "Cliente", "Morada");
-        when(tripService.getTripById(anyLong())).thenReturn(Optional.of(trip_fromLisboa_toPorto_1));
-
-        Optional<Reservation> tripOpt = reservationService.makeReservation(reservationDTO_fromLisboa_toPorto);
-
-        logger.info("aqui ze");
-
-        assertThat(tripOpt).isEmpty();
-        verify(reservationRepository, times(0)).save(any(Reservation.class));
-        verify(tripService, times(1)).getTripById(anyLong());
-    }
-
-    @Test
-    void givenManyReservations_whenReserveValidSeatFullBus_thenReturnEmptyOptional() {
-        ReservationDTO reservationDTO_fromLisboa_toPorto = new ReservationDTO(trip_fromLisboa_toPorto_2.getId(),
-                1, "Cliente", "Morada");
-        when(tripService.getTripById(anyLong())).thenReturn(Optional.of(trip_fromLisboa_toPorto_2));
-
-        Optional<Reservation> tripOpt = reservationService.makeReservation(reservationDTO_fromLisboa_toPorto);
-
-        assertThat(tripOpt).isEmpty();
-        verify(reservationRepository, times(0)).save(any(Reservation.class));
-        verify(tripService, times(1)).getTripById(anyLong());
-    }
-
-    @Test
-    void givenManyReservations_whenReserveOccupiedSeatNotFullBus_thenReturnEmptyOptional() {
-        ReservationDTO reservationDTO_fromLisboa_toPorto = new ReservationDTO(trip_fromLisboa_toPorto_1.getId(),
-                1, "Cliente", "Morada");
-        when(tripService.getTripById(anyLong())).thenReturn(Optional.of(trip_fromLisboa_toPorto_1));
-
-        Optional<Reservation> tripOpt = reservationService.makeReservation(reservationDTO_fromLisboa_toPorto);
-
-        assertThat(tripOpt).isEmpty();
-        verify(reservationRepository, times(0)).save(any(Reservation.class));
-        verify(tripService, times(1)).getTripById(anyLong());
-    }
-
-    @Test
-    void givenManyReservations_whenReserveEmptySeatNotFullBus_thenReturnOptionalOfReservation(){
-        ReservationDTO reservationDTO_fromLisboa_toPorto = new ReservationDTO(trip_fromLisboa_toPorto_1.getId(),
-                2, "Cliente", "Morada");
-        when(tripService.getTripById(anyLong())).thenReturn(Optional.of(trip_fromLisboa_toPorto_1));
-
-        Optional<Reservation> tripOpt = reservationService.makeReservation(reservationDTO_fromLisboa_toPorto);
-
-        assertThat(tripOpt)
-                .isNotEmpty()
-                .hasValueSatisfying(reservation -> {
-                    assertThat(reservation.getId()).isEqualTo(reservation_fromLisboa_toPorto.getId());
-                    assertThat(reservation.getTrip()).isNotNull();
-                    assertThat(reservation.getTrip().getId()).isEqualTo(trip_fromLisboa_toPorto_1.getId());
-                });
-        verify(reservationRepository, times(0)).save(any(Reservation.class));
-        verify(tripService, times(1)).getTripById(anyLong());
     }
 
     @Test
@@ -156,10 +97,85 @@ public class ReservationServiceWithMockRepositoryTest {
         Optional<Reservation> tripOpt = reservationService.makeReservation(reservationDTO_fromLisboa_toPorto);
 
         assertThat(tripOpt).isEmpty();
-        verify(reservationRepository, times(0)).save(any(Reservation.class));
         verify(tripService, times(1)).getTripById(anyLong());
+        verify(tripService, times(0)).getNumberReservationsByTrip(any(Trip.class));
+        verify(reservationRepository, times(0)).findByTripAndSeatNumber(any(Trip.class), anyInt());
+        verify(reservationRepository, times(0)).save(any(Reservation.class));
     }
 
-    // check if busIsFull function is working properly
+    @Test
+    void givenManyReservations_whenReserveInvalidSeat_thenReturnEmptyOptional() {
+        ReservationDTO reservationDTO_fromLisboa_toPorto = new ReservationDTO(trip_fromLisboa_toPorto_1.getId(),
+                10, "Cliente", "Morada");
+        when(tripService.getTripById(anyLong())).thenReturn(Optional.of(trip_fromLisboa_toPorto_1));
 
+        Optional<Reservation> tripOpt = reservationService.makeReservation(reservationDTO_fromLisboa_toPorto);
+
+        assertThat(tripOpt).isEmpty();
+        verify(tripService, times(1)).getTripById(anyLong());
+        verify(tripService, times(0)).getNumberReservationsByTrip(any(Trip.class));
+        verify(reservationRepository, times(0)).findByTripAndSeatNumber(any(Trip.class), anyInt());
+        verify(reservationRepository, times(0)).save(any(Reservation.class));
+    }
+
+    @Test
+    void givenManyReservations_whenReserveValidSeatFullBus_thenReturnEmptyOptional() {
+        ReservationDTO reservationDTO_fromLisboa_toPorto = new ReservationDTO(trip_fromLisboa_toPorto_2.getId(),
+                1, "Cliente", "Morada");
+        when(tripService.getTripById(anyLong())).thenReturn(Optional.of(trip_fromLisboa_toPorto_2));
+        when(tripService.getNumberReservationsByTrip(any(Trip.class))).thenReturn((long) trip_fromLisboa_toPorto_2.getReservations().size());
+
+        Optional<Reservation> tripOpt = reservationService.makeReservation(reservationDTO_fromLisboa_toPorto);
+
+        assertThat(tripOpt).isEmpty();
+        verify(tripService, times(1)).getTripById(anyLong());
+        verify(tripService, times(1)).getNumberReservationsByTrip(any(Trip.class));
+        verify(reservationRepository, times(0)).findByTripAndSeatNumber(any(Trip.class), anyInt());
+        verify(reservationRepository, times(0)).save(any(Reservation.class));
+    }
+
+    @Test
+    void givenManyReservations_whenReserveOccupiedSeatNotFullBus_thenReturnEmptyOptional() {
+        ReservationDTO reservationDTO_fromLisboa_toPorto = new ReservationDTO(trip_fromLisboa_toPorto_1.getId(),
+                1, "Cliente", "Morada");
+        when(tripService.getTripById(anyLong())).thenReturn(Optional.of(trip_fromLisboa_toPorto_1));
+        when(tripService.getNumberReservationsByTrip(any(Trip.class))).thenReturn((long) trip_fromLisboa_toPorto_1.getReservations().size());
+        when(reservationRepository.findByTripAndSeatNumber(any(Trip.class), anyInt())).thenReturn(Optional.of(reservation_fromLisboa_toPorto));
+
+        Optional<Reservation> tripOpt = reservationService.makeReservation(reservationDTO_fromLisboa_toPorto);
+
+        assertThat(tripOpt).isEmpty();
+        verify(tripService, times(1)).getTripById(anyLong());
+        verify(tripService, times(1)).getNumberReservationsByTrip(any(Trip.class));
+        verify(reservationRepository, times(1)).findByTripAndSeatNumber(any(Trip.class), anyInt());
+        verify(reservationRepository, times(0)).save(any(Reservation.class));
+    }
+
+    @Test
+    void givenManyReservations_whenReserveEmptySeatNotFullBus_thenReturnOptionalOfReservation(){
+        ReservationDTO reservationDTO_fromLisboa_toPorto = new ReservationDTO(trip_fromLisboa_toPorto_1.getId(),
+                2, "Cliente", "Morada");
+        Reservation newReservation = new Reservation(UUID.fromString("148e4567-e89b-12d3-a456-426614174000"),
+                trip_fromLisboa_toPorto_1, 2, "Cliente", "Morada");
+        when(tripService.getTripById(anyLong())).thenReturn(Optional.of(trip_fromLisboa_toPorto_1));
+        when(tripService.getNumberReservationsByTrip(any(Trip.class))).thenReturn((long) trip_fromLisboa_toPorto_1.getReservations().size());
+        when(reservationRepository.findByTripAndSeatNumber(any(Trip.class), anyInt())).thenReturn(Optional.empty());
+        when(reservationRepository.save(any(Reservation.class))).thenReturn(newReservation);
+
+        Optional<Reservation> tripOpt = reservationService.makeReservation(reservationDTO_fromLisboa_toPorto);
+
+        assertThat(tripOpt)
+                .isNotEmpty()
+                .hasValueSatisfying(reservation -> {
+                    assertThat(reservation.getId()).isEqualTo(newReservation.getId());
+                    assertThat(reservation.getTrip()).isNotNull();
+                    assertThat(reservation.getTrip().getId()).isEqualTo(trip_fromLisboa_toPorto_1.getId());
+                });
+        verify(tripService, times(1)).getTripById(anyLong());
+        verify(tripService, times(1)).getNumberReservationsByTrip(any(Trip.class));
+        verify(reservationRepository, times(1)).findByTripAndSeatNumber(any(Trip.class), anyInt());
+        verify(reservationRepository, times(1)).save(any(Reservation.class));
+    }
+
+    // TODO test bus is full and seatnumbernotvalid
 }

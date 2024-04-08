@@ -13,4 +13,6 @@ public interface ITripService {
     public Optional<Trip> getTripById(long tripId);
 
     public Optional<TripDetailsDTO> getTripDetailsById(long tripId);
+
+    public long getNumberReservationsByTrip(Trip trip);
 }

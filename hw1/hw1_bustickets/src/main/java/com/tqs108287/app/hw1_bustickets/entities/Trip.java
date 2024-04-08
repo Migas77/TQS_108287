@@ -30,10 +30,6 @@ public class Trip {
     @OneToMany(mappedBy = "trip")
     private Set<Reservation> reservations;
 
-    @Formula("(SELECT count(*) FROM reservation WHERE reservation.trip_id = id)")
-    @Setter(AccessLevel.NONE)
-    private int reservationsCount;
-
     @NotNull
     @Column(name = "number_of_seats", nullable = false)
     private int numberOfSeats;
