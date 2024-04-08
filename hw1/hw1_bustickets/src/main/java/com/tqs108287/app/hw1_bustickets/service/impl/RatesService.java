@@ -42,6 +42,6 @@ public class RatesService implements IRatesService {
 
     @Override
     public RatesCacheMetricsDTO getRatesCacheMetrics() {
-        return null;
+        return ratesCache.getMetrics();
     }
 }
