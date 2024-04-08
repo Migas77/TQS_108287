@@ -51,9 +51,6 @@ public class TripControllerIT {
     @LocalServerPort
     int randomServerPort;
 
-    @Autowired
-    private TripRepository tripRepository;
-
     @BeforeEach
     public void setUp() throws Exception {
         RestAssured.port = randomServerPort;
@@ -132,7 +129,7 @@ public class TripControllerIT {
                 body("id", contains(6)).
                 body("currency", contains("EUR")).
                 body("price", contains(20f)).
-                body("departureTime", contains(LocalDate.now().toString() + "T07:00:00"));
+                body("departureTime", contains(LocalDate.now() + "T07:00:00"));
         // check if it's today's date
     }
 
