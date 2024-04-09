@@ -1,0 +1,29 @@
+<label for="originCity">Origin City</label>
+<select id="originCity" class="form-select" aria-label="Default select example" style="margin-bottom: 20px">
+  <ng-container *ngFor="let stop of stops" >
+    <option [value]="stop.id" (click)="onSelectOrigin(stop)">Stop: {{stop.name}}; District: {{stop.district}}</option>
+  </ng-container>
+</select>
+
+<label for="destinationCity">Destination City</label>
+<select id="destinationCity" class="form-select" aria-label="Default select example" style="margin-bottom: 20px">
+  <ng-container *ngFor="let stop of stops" >
+    <option [value]="stop.id" (click)="onSelectDestination(stop)">Stop: {{stop.name}}; District: {{stop.district}}</option>
+  </ng-container>
+</select>
+
+<hr />
+<p>Simple datepicker</p>
+<ngb-datepicker [(ngModel)]="departure_date" style="margin-bottom: 20px"/>
+<hr />
+
+<label for="currencyPicker">Currency</label>
+<select id="currencyPicker" class="form-select" aria-label="Default select example" style="margin-bottom: 20px">
+  <ng-container *ngFor="let currency of currencies" >
+    <option [value]="currency" (click)="onSelectCurrency(currency)">{{currency}}</option>
+  </ng-container>
+</select>
+
+<hr />
+
+<button type="button" class="btn btn-primary" (click)="searchTrips()">Search Trips Between Cities</button>
