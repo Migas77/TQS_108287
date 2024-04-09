@@ -1,11 +1,7 @@
 package com.tqs108287.app.hw1_bustickets.ControllerWithMockServiceTest;
 
 import com.tqs108287.app.hw1_bustickets.boundary.StopRestController;
-import com.tqs108287.app.hw1_bustickets.boundary.TripRestController;
-import com.tqs108287.app.hw1_bustickets.entities.Leg;
-import com.tqs108287.app.hw1_bustickets.entities.Route;
 import com.tqs108287.app.hw1_bustickets.entities.Stop;
-import com.tqs108287.app.hw1_bustickets.entities.Trip;
 import com.tqs108287.app.hw1_bustickets.service.IStopService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.apache.http.HttpStatus;
@@ -18,14 +14,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.slf4j.LoggerFactory.getLogger;
 

@@ -1,7 +1,6 @@
 package com.tqs108287.app.hw1_bustickets.service;
 
 import com.tqs108287.app.hw1_bustickets.entities.Stop;
-import com.tqs108287.app.hw1_bustickets.entities.Trip;
 
 import java.util.List;
 import java.util.Optional;

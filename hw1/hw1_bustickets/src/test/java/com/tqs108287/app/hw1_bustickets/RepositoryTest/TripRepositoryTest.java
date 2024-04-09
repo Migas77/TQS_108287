@@ -3,14 +3,10 @@ package com.tqs108287.app.hw1_bustickets.RepositoryTest;
 import com.tqs108287.app.hw1_bustickets.entities.*;
 import com.tqs108287.app.hw1_bustickets.repositories.TripRepository;
 import org.junit.jupiter.api.*;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

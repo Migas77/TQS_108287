@@ -6,7 +6,6 @@ import com.tqs108287.app.hw1_bustickets.entities.Trip;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 
-import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;

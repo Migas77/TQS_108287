@@ -1,6 +1,5 @@
 package com.tqs108287.app.hw1_bustickets.boundary;
 
-import com.tqs108287.app.hw1_bustickets.entities.Reservation;
 import com.tqs108287.app.hw1_bustickets.entities.Stop;
 import com.tqs108287.app.hw1_bustickets.service.IStopService;
 import io.swagger.v3.oas.annotations.Operation;

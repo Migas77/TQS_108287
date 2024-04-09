@@ -7,8 +7,6 @@ import com.tqs108287.app.hw1_bustickets.service.IReservationService;
 import com.tqs108287.app.hw1_bustickets.service.ITripService;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.restassured.module.mockmvc.response.MockMvcResponse;
-import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +26,6 @@ import java.util.UUID;
 
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.slf4j.LoggerFactory.getLogger;
 

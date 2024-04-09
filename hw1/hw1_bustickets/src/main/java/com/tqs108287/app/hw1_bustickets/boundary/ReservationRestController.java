@@ -1,6 +1,5 @@
 package com.tqs108287.app.hw1_bustickets.boundary;
 
-import com.tqs108287.app.hw1_bustickets.dto.RatesCacheMetricsDTO;
 import com.tqs108287.app.hw1_bustickets.dto.ReservationDTO;
 import com.tqs108287.app.hw1_bustickets.entities.Reservation;
 import com.tqs108287.app.hw1_bustickets.entities.Trip;

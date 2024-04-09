@@ -5,7 +5,6 @@ import com.tqs108287.app.hw1_bustickets.entities.*;
 import com.tqs108287.app.hw1_bustickets.repositories.ReservationRepository;
 import com.tqs108287.app.hw1_bustickets.service.impl.ReservationService;
 import com.tqs108287.app.hw1_bustickets.service.impl.TripService;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +22,6 @@ import java.util.UUID;
 
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.slf4j.LoggerFactory.getLogger;
 

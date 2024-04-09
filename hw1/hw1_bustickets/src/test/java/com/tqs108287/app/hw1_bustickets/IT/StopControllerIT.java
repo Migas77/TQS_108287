@@ -1,13 +1,10 @@
 package com.tqs108287.app.hw1_bustickets.IT;
 
-import com.tqs108287.app.hw1_bustickets.repositories.TripRepository;
 import io.restassured.RestAssured;
 import org.apache.http.HttpStatus;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.DynamicPropertyRegistry;

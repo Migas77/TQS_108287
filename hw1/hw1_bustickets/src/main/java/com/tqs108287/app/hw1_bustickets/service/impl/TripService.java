@@ -29,8 +29,7 @@ public class TripService implements ITripService {
 
     @Override
     public List<TripDetailsDTO> getAllTripsDetailsOnDate(long originId, long destinationId, String currency, LocalDate date) {
-        logger.info("getAllTripsDetailsOnDate(); arguments: originId={}, destinationId={}, currency={}, date={}",
-                originId, destinationId, currency, date);
+        // logger.info("getAllTripsDetailsOnDate(); arguments: originId={}, destinationId={}, currency={}, date={}",originId, destinationId, currency, date);
 
         List<Trip> foundTrips = tripRepository.findTripsBetweenStopsOnDate(originId, destinationId, date);
         if (foundTrips.isEmpty()){

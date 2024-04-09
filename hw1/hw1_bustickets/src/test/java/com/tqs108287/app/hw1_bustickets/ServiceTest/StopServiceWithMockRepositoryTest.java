@@ -1,6 +1,5 @@
 package com.tqs108287.app.hw1_bustickets.ServiceTest;
 
-import com.tqs108287.app.hw1_bustickets.dto.TripDetailsDTO;
 import com.tqs108287.app.hw1_bustickets.entities.Stop;
 import com.tqs108287.app.hw1_bustickets.repositories.StopRepository;
 import com.tqs108287.app.hw1_bustickets.service.impl.StopService;

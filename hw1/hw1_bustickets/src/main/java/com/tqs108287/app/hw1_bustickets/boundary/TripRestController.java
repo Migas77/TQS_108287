@@ -1,9 +1,6 @@
 package com.tqs108287.app.hw1_bustickets.boundary;
 
 import com.tqs108287.app.hw1_bustickets.dto.TripDetailsDTO;
-import com.tqs108287.app.hw1_bustickets.entities.Stop;
-import com.tqs108287.app.hw1_bustickets.entities.Trip;
-import com.tqs108287.app.hw1_bustickets.service.IRatesService;
 import com.tqs108287.app.hw1_bustickets.service.IStopService;
 import com.tqs108287.app.hw1_bustickets.service.ITripService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,8 +43,7 @@ public class TripRestController {
             @RequestParam(defaultValue = "EUR") String currency,
             @RequestParam(name = "departure_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> departureDateOpt
     ){
-        logger.info("GET /api/trips; arguments: origin_id={}; destinationId={}; currency={}; departureDateOpt.isEmpty={} ",
-                originId, destinationId, currency, departureDateOpt.isEmpty());
+        // logger.info("GET /api/trips; arguments: origin_id={}; destinationId={}; currency={}; departureDateOpt.isEmpty={} ",originId, destinationId, currency, departureDateOpt.isEmpty());
 
         LocalDate departureDate = departureDateOpt.orElseGet(LocalDate::now);
 

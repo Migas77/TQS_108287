@@ -3,7 +3,6 @@ package com.tqs108287.app.hw1_bustickets.ControllerWithMockServiceTest;
 import com.tqs108287.app.hw1_bustickets.boundary.TripRestController;
 import com.tqs108287.app.hw1_bustickets.dto.TripDetailsDTO;
 import com.tqs108287.app.hw1_bustickets.entities.*;
-import com.tqs108287.app.hw1_bustickets.service.IRatesService;
 import com.tqs108287.app.hw1_bustickets.service.IStopService;
 import com.tqs108287.app.hw1_bustickets.service.ITripService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -25,7 +24,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
