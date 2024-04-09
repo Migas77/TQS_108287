@@ -25,10 +25,9 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.slf4j.LoggerFactory.getLogger;
 
-@Suite
-@IncludeEngines("cucumber")
-@SelectClasspathResource("com/tqs108287/App")
-@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com/tqs108287/App")
-@Disabled
-public class CucumberTest {
-}
+//@Suite
+//@IncludeEngines("cucumber")
+//@SelectClasspathResource("com/tqs108287/App")
+//@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com/tqs108287/App")
+//public class CucumberTest {
+//}
