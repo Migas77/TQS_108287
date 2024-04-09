@@ -66,6 +66,18 @@ public class ReservationControllerIT {
     }
 
     @Test
+    void givenValidTrip_whenMakeReservationOnInvalidSeat_thenReturnStatus409() {
+        given().
+                        contentType(ContentType.JSON).
+                        body(new ReservationDTO(1L, 1312321, "Cliente", "Morada")).
+                when().
+                        post("api/reservations").
+                then().
+                        statusCode(HttpStatus.SC_CONFLICT).
+                        body(is(Matchers.emptyOrNullString()));
+    }
+
+    @Test
     void givenValidFullTrip_whenMakeReservation_thenReturnStatus409() {
         given().
                 contentType(ContentType.JSON).
@@ -106,9 +118,29 @@ public class ReservationControllerIT {
                 get("api/trips/3").
         then().
                 statusCode(HttpStatus.SC_OK).
+                body("id", is(3)).
                 body("availableSeats", not(contains(2))).
                 body("availableSeats", contains(1,3,4));
     }
 
-    // TODO to be continued IT IS NOT OVER
+    @Test
+    void givenValidUUID_whenSearchReservation_thenReturnReservation() {
+        given().
+        when().
+                get("api/reservations/aa0f7252-309c-11ea-a72a-0242ac130002").
+        then().
+                statusCode(HttpStatus.SC_OK).
+                body("trip.id", is(1));
+    }
+
+    @Test
+    void givenInvalidUUID_whenSearchReservation_thenReturnStatus404() {
+        given().
+        when().
+                get("api/reservations/aaaaaaaa-aaac-11ea-a72a-0242ac130002").
+        then().
+                statusCode(HttpStatus.SC_NOT_FOUND).
+                body(is(Matchers.emptyOrNullString()));
+    }
+
 }

@@ -28,10 +28,7 @@ public class ReservationDTO {
         return new ReservationDTO(reservation.getTrip().getId(), reservation.getSeatNumber(), reservation.getClientName(), reservation.getClientAddress());
     }
 
-    public Reservation toReservationEntity(){
-        Trip trip = new Trip();
-        trip.setId(tripId);
-        // TODO ver se isto aqui está a funcionar quando fizer integration test
+    public Reservation toReservationEntity(Trip trip){
         return new Reservation(trip, getSeatNumber(), getClientName(), getClientAddress());
     }
 }

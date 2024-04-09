@@ -45,7 +45,7 @@ class ReservationDTOTest {
         Trip trip_fromLisboa_toPorto = new Trip(11L, null, Set.of(), 50, 25f, LocalDateTime.of(2024, 6, 2, 10, 15));
         ReservationDTO reservationDTO = new ReservationDTO(trip_fromLisboa_toPorto.getId(), 1, "Cliente", "Morada");
 
-        Reservation reservation = reservationDTO.toReservationEntity();
+        Reservation reservation = reservationDTO.toReservationEntity(trip_fromLisboa_toPorto);
 
         assertAll(
                 () -> assertEquals(reservationDTO.getTripId(), reservation.getTrip().getId()),

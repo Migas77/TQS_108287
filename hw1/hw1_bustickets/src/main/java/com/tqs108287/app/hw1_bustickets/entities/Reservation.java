@@ -1,5 +1,6 @@
 package com.tqs108287.app.hw1_bustickets.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -20,6 +21,7 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "trip_id", nullable = false)
+    @JsonManagedReference
     private Trip trip;
 
     @NotNull

@@ -1,5 +1,6 @@
 package com.tqs108287.app.hw1_bustickets.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -29,6 +30,7 @@ public class Trip {
 
     // Default fetch: Lazy
     @OneToMany(mappedBy = "trip")
+    @JsonBackReference
     private Set<Reservation> reservations;
 
     @NotNull

@@ -53,7 +53,7 @@ public class ReservationService implements IReservationService {
             return Optional.empty();
         }
 
-        return Optional.of(reservationRepository.save(reservationDTO.toReservationEntity()));
+        return Optional.of(reservationRepository.save(reservationDTO.toReservationEntity(trip)));
     }
 
     @Override
