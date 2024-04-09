@@ -18,7 +18,9 @@
 		<sonar.organization>migas77</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
-		<slf4j.version>2.0.12</slf4j.version>
+		<junit-platform-suite.version>1.10.1</junit-platform-suite.version>
+		<cucumber.version>7.15.0</cucumber.version>
+		<selenium.java.version>4.18.1</selenium.java.version>
 	</properties>
 
 	<dependencies>
@@ -86,6 +88,31 @@
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>mysql</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- cucumber -->
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-suite</artifactId>
+			<version>${junit-platform-suite.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-junit-platform-engine</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>${selenium.java.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

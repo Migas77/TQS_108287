@@ -46,4 +46,4 @@ VALUES
 INSERT INTO reservation (id, trip_id, seat_number, client_name, client_address)
 VALUES
     (UNHEX('aa0f7252309c11eaa72a0242ac130002'), 1, 1, 'Miguel', 'Rua XPTO'), -- trip 1 with 1 seat left
-    (UNHEX('aa0f7352309c11eaa72a0242ac130002'), 2, 1, 'Belchior', 'Rua XPTO') -- trip 2 wih 0 seats left
+    (UNHEX('aa0f7352309c11eaa72a0242ac130002'), 2, 1, 'Belchior', 'Rua XPTO2') -- trip 2 wih 0 seats left
