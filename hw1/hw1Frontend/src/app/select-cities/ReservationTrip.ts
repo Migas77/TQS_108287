@@ -1,11 +1,9 @@
 import {RouteTrip} from "./RouteTrip";
 
-export interface TripDetails {
+export interface ReservationTrip {
   id: number,
   route: RouteTrip
-  availableSeats: number[]
   numberOfSeats: number
-  price: number
-  currency: String
+  priceEuros: number
   departureTime: String
 }

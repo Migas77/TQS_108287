@@ -1,5 +1,6 @@
 <label for="originCity">Origin City</label>
 <select id="originCity" class="form-select" aria-label="Default select example" style="margin-bottom: 20px">
+  <option selected disabled hidden>Choose Origin City</option>
   <ng-container *ngFor="let stop of stops" >
     <option [value]="stop.id" (click)="onSelectOrigin(stop)">Stop: {{stop.name}}; District: {{stop.district}}</option>
   </ng-container>
@@ -7,6 +8,7 @@
 
 <label for="destinationCity">Destination City</label>
 <select id="destinationCity" class="form-select" aria-label="Default select example" style="margin-bottom: 20px">
+  <option selected disabled hidden>Choose Destination City</option>
   <ng-container *ngFor="let stop of stops" >
     <option [value]="stop.id" (click)="onSelectDestination(stop)">Stop: {{stop.name}}; District: {{stop.district}}</option>
   </ng-container>
@@ -19,6 +21,7 @@
 
 <label for="currencyPicker">Currency</label>
 <select id="currencyPicker" class="form-select" aria-label="Default select example" style="margin-bottom: 20px">
+  <option selected disabled hidden>Choose Currency</option>
   <ng-container *ngFor="let currency of currencies" >
     <option [value]="currency" (click)="onSelectCurrency(currency)">{{currency}}</option>
   </ng-container>
@@ -26,4 +29,21 @@
 
 <hr />
 
-<button type="button" class="btn btn-primary" (click)="searchTrips()">Search Trips Between Cities</button>
+<button type="button" class="btn btn-primary" (click)="searchTrips()" style="margin-bottom: 20px">Search Trips Between Cities</button>
+
+<div id="selectTrips" class="list-group" *ngIf="trips.length > 0"style="margin-bottom: 20px">
+  <hr />
+  <label for="selectTrips">Select Your Trip</label>
+  <ng-container *ngFor="let trip of trips">
+    <a (click)="passTripToChild(trip)" class="list-group-item list-group-item-action">
+      Route: {{getTripString(trip)}}<br>
+      Available Seats: {{trip.availableSeats}}<br>
+      Bus Capacity: {{trip.numberOfSeats}}<br>
+      Price: {{trip.price}}<br>
+    </a>
+  </ng-container>
+
+</div>
+
+<app-trip-details *ngIf="tripToPass!=null" [trip]="tripToPass"></app-trip-details>
+
