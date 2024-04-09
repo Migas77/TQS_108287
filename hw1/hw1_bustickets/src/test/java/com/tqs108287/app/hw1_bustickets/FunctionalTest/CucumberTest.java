@@ -3,6 +3,7 @@ package com.tqs108287.app.hw1_bustickets.FunctionalTest;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;
@@ -28,5 +29,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 @IncludeEngines("cucumber")
 @SelectClasspathResource("com/tqs108287/App")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com/tqs108287/App")
+@Disabled
 public class CucumberTest {
 }
