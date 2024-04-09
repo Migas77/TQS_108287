@@ -47,9 +47,6 @@ export class TripDetailsComponent {
     }
   }
 
-  onSelectSeatNumber(seatNumber : number){
-    this.selectedSeatNumber = seatNumber
-  }
 
   getTripString(trip: ReservationTrip){
     return trip.route.legs.map((leg: Leg) => leg.originStop.name).join(' -> ')

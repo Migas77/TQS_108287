@@ -1,9 +1,8 @@
 <div class="mb-3">
-  <select id="currencyPicker" class="form-select" aria-label="Default select example" style="margin-bottom: 20px">
+  <label class="form-label">Seat Number</label>
+  <select id="currencyPicker" class="form-select" aria-label="Default select example" style="margin-bottom: 20px" [(ngModel)]="selectedSeatNumber">
     <option selected disabled hidden>Choose Your Seat Number</option>
-    <ng-container *ngFor="let seatNumber of trip?.availableSeats" >
-      <option [value]="seatNumber" (click)="onSelectSeatNumber(seatNumber)">{{seatNumber}}</option>
-    </ng-container>
+    <option *ngFor="let seatNumber of trip?.availableSeats" [ngValue]="seatNumber">{{seatNumber}}</option>
   </select>
 </div>
 <div class="mb-3">
@@ -20,6 +19,7 @@
 <div class="card" *ngIf="reservation">
   <div class="card-body">
     <b>Your reservation was successfull</b><br>
+    Reservation Number: {{reservation.id}}<br>
     Seat Number: {{reservation.seatNumber}}<br>
     Client Name: {{reservation.clientName}}<br>
     Client Address: {{reservation.clientAddress}}<br>

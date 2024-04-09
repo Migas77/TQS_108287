@@ -48,23 +48,8 @@ export class SelectCitiesComponent {
     })
   }
 
-  onSelectOrigin(stop: Stop){
-    console.log("origin", stop)
-    this.originStop = stop;
-  }
-
-  onSelectDestination(stop: Stop){
-    console.log("destination", stop)
-    this.destinationStop = stop;
-  }
-
-  onSelectCurrency(currency: String){
-    console.log("currency", currency)
-    this.selectedCurrency = currency;
-  }
-
   searchTrips(){
-    console.log("originStop", this.originStop)
+    console.log("originStop", this.originStop?.id)
     console.log("destinationStop", this.destinationStop)
     console.log("departureDate", this.departure_date, `${String(this.departure_date.year).padStart(4, "0")}-${String(this.departure_date.month).padStart(2, "0")}-${String(this.departure_date.day).padStart(2, "0")}`)
     console.log("selectedCurrency", this.selectedCurrency)
