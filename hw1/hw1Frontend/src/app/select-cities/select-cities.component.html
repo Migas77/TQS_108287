@@ -1,13 +1,13 @@
 <label for="originCity">Origin City</label>
 <select id="originCity" class="form-select" aria-label="Default select example" style="margin-bottom: 20px" [(ngModel)]="originStop">
   <option selected disabled hidden>Choose Origin City</option>
-<option *ngFor="let stop of stops" [ngValue]="stop" >Stop: {{stop.name}}; District: {{stop.district}} </option>
+<option id="origin_city_{{stop.name}}" *ngFor="let stop of stops" [ngValue]="stop" >Stop: {{stop.name}}; District: {{stop.district}} </option>
 </select>
 
 <label for="destinationCity">Destination City</label>
 <select id="destinationCity" class="form-select" aria-label="Default select example" style="margin-bottom: 20px" [(ngModel)]="destinationStop">
   <option selected disabled hidden>Choose Destination City</option>
-  <option *ngFor="let stop of stops" [ngValue]="stop">Stop: {{stop.name}}; District: {{stop.district}}</option>
+  <option id="destination_city_{{stop.name}}" *ngFor="let stop of stops" [ngValue]="stop">Stop: {{stop.name}}; District: {{stop.district}}</option>
 </select>
 
 <hr />
@@ -18,22 +18,22 @@
 <label for="currencyPicker">Currency</label>
 <select id="currencyPicker" class="form-select" aria-label="Default select example" style="margin-bottom: 20px" [(ngModel)]="selectedCurrency">
   <option selected disabled hidden>Choose Currency</option>
-  <option *ngFor="let currency of currencies" [ngValue]="currency">{{currency}}</option>
+  <option *ngFor="let currency of currencies" [ngValue]="currency" id="currency_{{currency}}">{{currency}}</option>
 </select>
 
 <hr />
 
-<button type="button" class="btn btn-primary" (click)="searchTrips()" style="margin-bottom: 20px">Search Trips Between Cities</button>
+<button id="search_trips_button" type="button" class="btn btn-primary" (click)="searchTrips()" style="margin-bottom: 20px">Search Trips Between Cities</button>
 
 <div id="selectTrips" class="list-group" *ngIf="trips.length > 0" style="margin-bottom: 20px">
   <hr />
   <label for="selectTrips">Select Your Trip</label>
   <ng-container *ngFor="let trip of trips">
     <a (click)="passTripToChild(trip)" class="list-group-item list-group-item-action" onclick="location.href='#';" style="cursor: pointer;">
-      Route: {{getTripString(trip)}}<br>
-      Available Seats: {{trip.availableSeats}}<br>
-      Bus Capacity: {{trip.numberOfSeats}}<br>
-      Price: {{trip.price}}<br>
+      <span id="selected_trip_route">Route: {{getTripString(trip)}}</span><br>
+      <span id="selected_trip_available_seats">Available Seats: {{trip.availableSeats}}</span><br>
+      <span id="selected_trip_bus_capacity">Bus Capacity: {{trip.numberOfSeats}}</span><br>
+      <span id="selected_trip_price">Price: {{trip.price}}</span><br>
     </a>
   </ng-container>
 

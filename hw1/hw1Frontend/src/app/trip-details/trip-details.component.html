@@ -1,6 +1,6 @@
 <div class="mb-3">
   <label class="form-label">Seat Number</label>
-  <select id="currencyPicker" class="form-select" aria-label="Default select example" style="margin-bottom: 20px" [(ngModel)]="selectedSeatNumber">
+  <select id="seatNumberPicker" class="form-select" aria-label="Default select example" style="margin-bottom: 20px" [(ngModel)]="selectedSeatNumber">
     <option selected disabled hidden>Choose Your Seat Number</option>
     <option *ngFor="let seatNumber of trip?.availableSeats" [ngValue]="seatNumber">{{seatNumber}}</option>
   </select>
