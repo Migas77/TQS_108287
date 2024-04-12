@@ -49,7 +49,7 @@ export class TripDetailsComponent {
 
 
   getTripString(trip: ReservationTrip){
-    return trip.route.legs.map((leg: Leg) => leg.originStop.name).join(' -> ')
+    return trip.route.legs[0].originStop.name + " -> " + trip.route.legs.map((leg: Leg) => leg.destinationStop.name).join(' -> ')
   }
 
 

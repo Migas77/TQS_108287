@@ -7,18 +7,18 @@
 </div>
 <div class="mb-3">
   <label class="form-label">Client Name</label>
-  <input class="form-control" type="text" placeholder="ClientName" aria-label="default input example" [(ngModel)]="clientName">
+  <input id="client_name_input" class="form-control" type="text" placeholder="ClientName" aria-label="default input example" [(ngModel)]="clientName">
 </div>
 <div class="mb-3">
   <label class="form-label">Client Address</label>
-  <input class="form-control" type="text" placeholder="ClientAddress" aria-label="default input example" [(ngModel)]="clientAddress">
+  <input id="client_address_input" class="form-control" type="text" placeholder="ClientAddress" aria-label="default input example" [(ngModel)]="clientAddress">
 </div>
 
-<button type="button" class="btn btn-primary" (click)="makeReservation()" style="margin-bottom: 20px">Make Your Reservation</button>
+<button id="make_reservation_button" type="button" class="btn btn-primary" (click)="makeReservation()" style="margin-bottom: 20px">Make Your Reservation</button>
 
 <div class="card" *ngIf="reservation">
   <div class="card-body">
-    <b>Your reservation was successfull</b><br>
+    <b id="successful message">Your reservation was successfull</b><br>
     Reservation Number: {{reservation.id}}<br>
     Seat Number: {{reservation.seatNumber}}<br>
     Client Name: {{reservation.clientName}}<br>

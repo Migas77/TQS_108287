@@ -5,15 +5,16 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 
 import java.time.Duration;
+import java.util.List;
 
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,30 +33,49 @@ public class BusTicketsSteps {
     public void iAmOn(String url) {
         logger.info("I am on {}", url);
         driver.get(url);
+        driver.manage().window().setSize(new Dimension(1838, 1053));
     }
 
 
     @When("I choose my flight from {string} to {string}")
     public void iChooseMyFlightFromTo(String origin_name, String destination_name) {
         logger.info("I choose my flight from {} to {}", origin_name, destination_name);
-        driver.findElement(By.id("origin_city_" + origin_name)).click();
-        driver.findElement(By.id("destination_city_" + destination_name)).click();
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.elementToBeClickable(By.id("origin_city_" + origin_name))).click();
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.elementToBeClickable(By.id("destination_city_" + destination_name))).click();
     }
 
     @And("I choose date 2024-06-02")
     public void iChooseDate() {
         logger.info("I choose date 2024-06-02");
         // static because couldn't figure out how to select day
-        driver.findElement(By.cssSelector(".form-select:nth-child(1)")).findElement(By.xpath("//option[. = 'Jun']")).click();
+        {
+            WebElement dropdown = driver.findElement(By.cssSelector(".form-select:nth-child(1)"));
+            dropdown.findElement(By.xpath("//option[. = 'Jun']")).click();
+        }
+        {
+            WebElement element = driver.findElement(By.cssSelector(".form-select:nth-child(1)"));
+            Actions builder = new Actions(driver);
+            builder.moveToElement(element).clickAndHold().perform();
+        }
+        {
+            WebElement element = driver.findElement(By.cssSelector(".form-select:nth-child(1)"));
+            Actions builder = new Actions(driver);
+            builder.moveToElement(element).perform();
+        }
+        {
+            WebElement element = driver.findElement(By.cssSelector(".form-select:nth-child(1)"));
+            Actions builder = new Actions(driver);
+            builder.moveToElement(element).release().perform();
+        }
         driver.findElement(By.cssSelector(".ngb-dp-week:nth-child(2) > .ngb-dp-day:nth-child(7) > .btn-light")).click();
     }
 
     @And("I choose currency USD")
     public void iChooseCurrency() {
         logger.info("I choose currency USD");
-        WebElement dropdown = driver.findElement(By.id("currencyPicker"));
-        new WebDriverWait(driver, Duration.ofSeconds(20))
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("//option[. = 'USD']"))).click();
+        driver.findElement(By.id("currencyPicker")).findElement(By.xpath("//option[. = 'USD']")).click();
     }
 
     @And("I click search trips")
@@ -67,9 +87,9 @@ public class BusTicketsSteps {
     @Then("{int} trips should be found")
     public void shouldBeFoundTrips(int arg0) {
         logger.info("{} trips should be found", arg0);
-        WebElement firstTripFound = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By.tagName("a")));
-        assertThat(driver.findElements(By.tagName("a"))).hasSize(arg0);
+        List<WebElement> foundTrips = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.numberOfElementsToBe(By.tagName("a"),2));
+        assertThat(foundTrips).hasSize(arg0);
     }
 
     @And("found trip 1 should be presented with Route, Bus Capacity and Available Seats {string} {string} {string}")
@@ -81,31 +101,26 @@ public class BusTicketsSteps {
 
     @And("I select trip {int}")
     public void iSelectTrip(int arg0) {
-    }
-
-    @And("selected trip should have form to fill in for seatNumber clientName clientAddress")
-    public void foundTripsShouldHaveFormToFillInForSeatNumberClientNameClientAddress() {
-        
+        driver.findElements(By.tagName("a")).get(arg0-1).click();
     }
 
     @And("I fill in my reservation information {int} {string} {string}")
     public void iFillInMyReservationInformation(int seat_number, String clientName, String clientAddress) {
         WebElement dropdown = driver.findElement(By.id("seatNumberPicker"));
         dropdown.findElement(By.xpath(String.format("//option[. = '%d']", seat_number))).click();
-        driver.findElement(By.cssSelector(".mb-3:nth-child(2) > .form-control")).click();
-        driver.findElement(By.cssSelector(".mb-3:nth-child(2) > .form-control")).sendKeys(clientName);
-        driver.findElement(By.cssSelector(".ng-untouched")).click();
-        driver.findElement(By.cssSelector(".ng-untouched")).sendKeys(clientAddress);
+        driver.findElement(By.id("client_name_input")).sendKeys(clientName);
+        driver.findElement(By.id("client_address_input")).sendKeys(clientAddress);
     }
 
     @And("make my reservation")
     public void makeMyReservation() {
-        driver.findElement(By.cssSelector(".btn:nth-child(4)")).click();
+        driver.findElement(By.id("make_reservation_button")).sendKeys(Keys.ENTER);
     }
 
     @Then("should be presented successful reservation message")
     public void shouldBePresentedSucessfullReservationMessage() {
-        assertThat(driver.findElement(By.cssSelector("b")).getText()).isEqualTo("Your reservation was successfull");
+        assertThat(new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.elementToBeClickable(By.id("successful message"))).getText()).isEqualTo("Your reservation was successfull");
     }
 
 }

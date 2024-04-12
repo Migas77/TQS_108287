@@ -50,8 +50,8 @@ export class SelectCitiesComponent {
 
   searchTrips(){
     console.log("originStop", this.originStop?.id)
-    console.log("destinationStop", this.destinationStop)
-    console.log("departureDate", this.departure_date, `${String(this.departure_date.year).padStart(4, "0")}-${String(this.departure_date.month).padStart(2, "0")}-${String(this.departure_date.day).padStart(2, "0")}`)
+    console.log("destinationStop", this.destinationStop?.id)
+    console.log("departureDate", `${String(this.departure_date.year).padStart(4, "0")}-${String(this.departure_date.month).padStart(2, "0")}-${String(this.departure_date.day).padStart(2, "0")}`)
     console.log("selectedCurrency", this.selectedCurrency)
     if (this.originStop!=null && this.destinationStop!=null && this.departure_date!=null && this.selectedCurrency!=null){
       this.tripService.getTripsBetweenCities(this.originStop.id, this.destinationStop.id, this.selectedCurrency,
@@ -64,7 +64,7 @@ export class SelectCitiesComponent {
   }
 
   getTripString(trip: TripDetails){
-    return trip.route.legs.map((leg: Leg) => leg.originStop.name).join(' -> ')
+    return trip.route.legs[0].originStop.name + " -> " + trip.route.legs.map((leg: Leg) => leg.destinationStop.name).join(' -> ')
   }
 
   passTripToChild(trip: TripDetails){
